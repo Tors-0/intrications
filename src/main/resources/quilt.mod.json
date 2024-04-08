@@ -6,13 +6,13 @@
 		"version": "${version}",
 		"metadata": {
 			"name": "Intrications",
-			"description": "No idea yet :3",
+			"description": "A mod in which I do simple things in a complex manner :3",
 			"contributors": {
 				"Raeeeee": "Owner"
 			},
 			"contact": {
-				"issues": "https://github.com/QuiltMC/quilt-template-mod/issues",
-				"sources": "https://github.com/QuiltMC/quilt-template-mod"
+				"issues": "https://github.com/Tors-0/intrications/issues",
+				"sources": "https://github.com/Tors-0/intrications"
 			},
 			"icon": "assets/intrications/icon.png"
 		},
