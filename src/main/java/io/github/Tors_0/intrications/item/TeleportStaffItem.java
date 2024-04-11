@@ -1,12 +1,17 @@
 package io.github.Tors_0.intrications.item;
 
 import io.github.Tors_0.intrications.util.ItemModified;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.particle.ParticleFactory;
+import net.minecraft.client.render.debug.GameTestDebugRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.Vanishable;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -23,14 +28,14 @@ import net.minecraft.world.World;
 
 public class TeleportStaffItem extends Item implements Vanishable {
 	public static final ItemStack FUEL_ITEM = new ItemStack(Items.ENDER_PEARL);
-	public static final int MAX_DISTANCE = 50;
+	public static final int MAX_DISTANCE = 96;
 
 	public TeleportStaffItem(Settings settings) {
 		super(settings.maxDamage(MAX_DISTANCE + 1));
 	}
 
 	public int getMaxUseTime(ItemStack stack) {
-		return 120;
+		return 100;
 	}
 
 	public UseAction getUseAction(ItemStack stack) {
@@ -52,7 +57,7 @@ public class TeleportStaffItem extends Item implements Vanishable {
 		}
 	}
 
-	public static float getDrawPercentage(ItemStack stack, int remainingUseTicks) {
+	public static float getChargePercentage(ItemStack stack, int remainingUseTicks) {
 		return (float) (stack.getMaxUseTime() - remainingUseTicks) / stack.getMaxUseTime();
 	}
 
@@ -70,11 +75,35 @@ public class TeleportStaffItem extends Item implements Vanishable {
 	public boolean isDamageable() {
 		return true;
 	}
-
-	@Override
-	public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-		//stack.setDamage(stack.getMaxDamage() - Math.max(1,(int) (MAX_DISTANCE * getDrawPercentage(stack, remainingUseTicks))));
+	public double getMaxDistance(ItemStack stack, int remainingUseTicks) {
+		return MAX_DISTANCE * Math.pow(getChargePercentage(stack, remainingUseTicks), 2);
 	}
+
+//	@Override
+//	public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+//		if (world.isClient() && user instanceof PlayerEntity player) {
+//			if (remainingUseTicks > .8f * getMaxUseTime(stack)) {
+//				stack.setDamage(0);
+//				return;
+//			}
+//			if (player.getInventory().contains(FUEL_ITEM) || player.isCreative()) {
+//				double maxDistance = getMaxDistance(stack, remainingUseTicks);
+//				BlockHitResult hitResult = ItemModified.raycast(
+//					world,
+//					player,
+//					RaycastContext.ShapeType.COLLIDER,
+//					RaycastContext.FluidHandling.NONE,
+//					maxDistance
+//				);
+//
+//				BlockPos pos = new BlockPos(hitResult.getPos());
+//				pos.add(.5,0,.5);
+//
+//				// TODO create better targeting particle
+//				// world.addParticle(ParticleTypes.FIREWORK, pos.getX(), pos.getY(), pos.getZ(), 0, -1, 0);
+//			}
+//		}
+//	}
 
 	@Override
 	public int getItemBarStep(ItemStack stack) {
@@ -90,7 +119,7 @@ public class TeleportStaffItem extends Item implements Vanishable {
 			}
 			if (player.getInventory().contains(FUEL_ITEM) || player.isCreative()) {
 				ItemStack itemStack = player.getInventory().getStack(player.getInventory().getSlotWithStack(FUEL_ITEM));
-				double maxDistance = MAX_DISTANCE * getDrawPercentage(stack, remainingUseTicks);
+				double maxDistance = getMaxDistance(stack, remainingUseTicks);
 				Vec3d startPoint = player.getPos().add(0.0, 1.6F, 0.0);
 				BlockHitResult hitResult = ItemModified.raycast(
 					world,

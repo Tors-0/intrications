@@ -26,7 +26,7 @@ public class Intrications implements ModInitializer {
 				if (livingEntity == null) {
 					return 0f;
 				} else {
-					return livingEntity.getActiveItem() != itemStack ? 0f : TeleportStaffItem.getDrawPercentage(itemStack, livingEntity.getItemUseTimeLeft());
+					return livingEntity.getActiveItem() != itemStack ? 0f : TeleportStaffItem.getChargePercentage(itemStack, livingEntity.getItemUseTimeLeft());
 				}
 			})
 		);
