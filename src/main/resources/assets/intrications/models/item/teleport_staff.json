@@ -1,6 +1,26 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "minecraft:item/stick"
-  }
+    "layer0": "intrications:item/teleport_staff"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "pull": 0.2
+      },
+      "model": "intrications:item/teleport_staff_charge0"
+    },
+    {
+      "predicate": {
+        "pull": 0.65
+      },
+      "model": "intrications:item/teleport_staff_charge1"
+    },
+    {
+      "predicate": {
+        "pull": 0.95
+      },
+      "model": "intrications:item/teleport_staff_charge2"
+    }
+  ]
 }

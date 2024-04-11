@@ -52,8 +52,8 @@ public class TeleportStaffItem extends Item implements Vanishable {
 		}
 	}
 
-	public float getDrawPercentage(ItemStack stack, int remainingUseTicks) {
-		return (float) (getMaxUseTime(stack) - remainingUseTicks) / getMaxUseTime(stack);
+	public static float getDrawPercentage(ItemStack stack, int remainingUseTicks) {
+		return (float) (stack.getMaxUseTime() - remainingUseTicks) / stack.getMaxUseTime();
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class TeleportStaffItem extends Item implements Vanishable {
 
 	@Override
 	public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-		stack.setDamage(stack.getMaxDamage() - Math.max(1,(int) (MAX_DISTANCE * getDrawPercentage(stack, remainingUseTicks))));
+		//stack.setDamage(stack.getMaxDamage() - Math.max(1,(int) (MAX_DISTANCE * getDrawPercentage(stack, remainingUseTicks))));
 	}
 
 	@Override
@@ -84,6 +84,10 @@ public class TeleportStaffItem extends Item implements Vanishable {
 	@Override
 	public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
 		if (!world.isClient() && user instanceof PlayerEntity player) {
+			if (remainingUseTicks > .8f * getMaxUseTime(stack)) {
+				stack.setDamage(0);
+				return;
+			}
 			if (player.getInventory().contains(FUEL_ITEM) || player.isCreative()) {
 				ItemStack itemStack = player.getInventory().getStack(player.getInventory().getSlotWithStack(FUEL_ITEM));
 				double maxDistance = MAX_DISTANCE * getDrawPercentage(stack, remainingUseTicks);
