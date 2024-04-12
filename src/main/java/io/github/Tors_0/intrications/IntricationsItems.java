@@ -1,5 +1,6 @@
 package io.github.Tors_0.intrications;
 
+import io.github.Tors_0.intrications.item.FireStaffItem;
 import io.github.Tors_0.intrications.item.TeleportStaffItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -15,6 +16,7 @@ public interface IntricationsItems {
 
 	// Item NAME = createItem("name", new ModItem(new QuiltItemSettings()));
 	Item TELEPORT_STAFF = createItem("teleport_staff", new TeleportStaffItem(new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS)));
+	Item FIRE_STAFF = createItem("fire_staff", new FireStaffItem(new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS)));
 
 	/**
 	 * Creates a new item of type T using the constructor from T

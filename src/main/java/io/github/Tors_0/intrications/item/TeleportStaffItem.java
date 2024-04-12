@@ -43,6 +43,11 @@ public class TeleportStaffItem extends Item implements Vanishable {
 	}
 
 	@Override
+	public boolean isUsedOnRelease(ItemStack stack) {
+		return true;
+	}
+
+	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		if (!world.isClient()) {
 			ItemStack itemStack = user.getStackInHand(hand);
