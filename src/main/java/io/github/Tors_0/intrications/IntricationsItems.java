@@ -15,8 +15,8 @@ public interface IntricationsItems {
 	Map<Item, Identifier> ITEMS = new LinkedHashMap<>();
 
 	// Item NAME = createItem("name", new ModItem(new QuiltItemSettings()));
-	Item TELEPORT_STAFF = createItem("teleport_staff", new TeleportStaffItem(new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS)));
-	Item FIRE_STAFF = createItem("fire_staff", new FireStaffItem(new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS)));
+	Item TELEPORT_STAFF = createItem("teleport_staff", new TeleportStaffItem(new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)));
+	Item FIRE_STAFF = createItem("fire_staff", new FireStaffItem(new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(128)));
 
 	/**
 	 * Creates a new item of type T using the constructor from T

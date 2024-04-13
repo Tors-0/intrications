@@ -27,7 +27,7 @@ import java.util.function.Predicate;
 public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 	public static final Predicate<ItemStack> FIRE_STAFF_PROJECTILES = itemStack -> itemStack.isOf(Items.FIRE_CHARGE);
 	public FireStaffItem(Settings settings) {
-		super(settings);
+		super(settings.maxDamage(96));
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 					boolean bl2 = bl && itemStack.isOf(Items.ARROW);
 					if (!world.isClient) {
 						Vec3d lookDir = user.getRotationVec(1f);
-						FireballEntity fireballEntity = new FireballEntity(world, user, lookDir.x, lookDir.y, lookDir.z, (int) (3 * f));
+						FireballEntity fireballEntity = new FireballEntity(world, user, lookDir.x, lookDir.y, lookDir.z, (int) (4 * f));
 						fireballEntity.move(MovementType.SELF, lookDir.normalize().add(0,1,0));
 						fireballEntity.setOwner(fireballEntity);
 
@@ -178,6 +178,9 @@ public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 
 			user.incrementStat(Stats.USED.getOrCreateStat(this)); // wahoo statistics
 
+			stack.damage(1, user, (p) -> {
+				p.sendToolBreakStatus(user.getActiveHand());
+			});
 			return ActionResult.SUCCESS; // and yippee we did it
 		} else {
 			return ActionResult.FAIL; // if the entity is immune to fire, we fail :(

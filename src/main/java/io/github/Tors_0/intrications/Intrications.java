@@ -13,7 +13,7 @@ public class Intrications implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(Intrications.ID);
 	@Override
 	public void onInitialize(ModContainer mod) {
-		LOGGER.info("Internal Intrications Initializing Immediately :3 (version {})", mod.metadata().version());
+		LOGGER.info("Intrications Internals Initializing Immediately :3 (version {})", mod.metadata().version());
 
 		// add mod items
 		IntricationsItems.register();

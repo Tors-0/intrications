@@ -30,9 +30,15 @@ public class TeleportStaffItem extends Item implements Vanishable {
 	public static final ItemStack FUEL_ITEM = new ItemStack(Items.ENDER_PEARL);
 	public static final int MAX_DISTANCE = 96;
 
-	public TeleportStaffItem(Settings settings) {
-		super(settings.maxDamage(MAX_DISTANCE + 1));
+	@Override
+	public boolean canRepair(ItemStack stack, ItemStack ingredient) {
+		return stack.isDamaged() && ingredient.isOf(Items.ENDER_EYE);
 	}
+
+	public TeleportStaffItem(Settings settings) {
+		super(settings);
+	}
+
 
 	public int getMaxUseTime(ItemStack stack) {
 		return 100;
@@ -40,11 +46,6 @@ public class TeleportStaffItem extends Item implements Vanishable {
 
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.BOW;
-	}
-
-	@Override
-	public boolean isUsedOnRelease(ItemStack stack) {
-		return true;
 	}
 
 	@Override
@@ -67,16 +68,6 @@ public class TeleportStaffItem extends Item implements Vanishable {
 	}
 
 	@Override
-	public boolean isItemBarVisible(ItemStack stack) {
-		return super.isItemBarVisible(stack);
-	}
-
-	@Override
-	public int getItemBarColor(ItemStack stack) {
-		return super.getItemBarColor(stack);
-	}
-
-	@Override
 	public boolean isDamageable() {
 		return true;
 	}
@@ -84,42 +75,10 @@ public class TeleportStaffItem extends Item implements Vanishable {
 		return MAX_DISTANCE * Math.pow(getChargePercentage(stack, remainingUseTicks), 2);
 	}
 
-//	@Override
-//	public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-//		if (world.isClient() && user instanceof PlayerEntity player) {
-//			if (remainingUseTicks > .8f * getMaxUseTime(stack)) {
-//				stack.setDamage(0);
-//				return;
-//			}
-//			if (player.getInventory().contains(FUEL_ITEM) || player.isCreative()) {
-//				double maxDistance = getMaxDistance(stack, remainingUseTicks);
-//				BlockHitResult hitResult = ItemModified.raycast(
-//					world,
-//					player,
-//					RaycastContext.ShapeType.COLLIDER,
-//					RaycastContext.FluidHandling.NONE,
-//					maxDistance
-//				);
-//
-//				BlockPos pos = new BlockPos(hitResult.getPos());
-//				pos.add(.5,0,.5);
-//
-//				// TODO create better targeting particle
-//				// world.addParticle(ParticleTypes.FIREWORK, pos.getX(), pos.getY(), pos.getZ(), 0, -1, 0);
-//			}
-//		}
-//	}
-
-	@Override
-	public int getItemBarStep(ItemStack stack) {
-		return super.getItemBarStep(stack);
-	}
-
 	@Override
 	public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
 		if (!world.isClient() && user instanceof PlayerEntity player) {
 			if (remainingUseTicks > .8f * getMaxUseTime(stack)) {
-				stack.setDamage(0);
 				return;
 			}
 			if (player.getInventory().contains(FUEL_ITEM) || player.isCreative()) {
@@ -153,7 +112,9 @@ public class TeleportStaffItem extends Item implements Vanishable {
 					}
 				}
 
-				stack.setDamage(0);
+				stack.damage(1, player, (p) -> {
+					p.sendToolBreakStatus(player.getActiveHand());
+				});
 				player.incrementStat(Stats.USED.getOrCreateStat(this));
 			}
 		}
