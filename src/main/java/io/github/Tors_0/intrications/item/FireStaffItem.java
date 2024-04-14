@@ -1,5 +1,6 @@
 package io.github.Tors_0.intrications.item;
 
+import io.github.Tors_0.intrications.entity.StaffFireballEntity;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
@@ -124,8 +125,8 @@ public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 					boolean bl2 = bl && itemStack.isOf(Items.ARROW);
 					if (!world.isClient) {
 						Vec3d lookDir = user.getRotationVec(1f);
-						FireballEntity fireballEntity = new FireballEntity(world, user, lookDir.x, lookDir.y, lookDir.z, (int) (4 * f));
-						fireballEntity.move(MovementType.SELF, lookDir.normalize().add(0,1,0));
+						FireballEntity fireballEntity = new StaffFireballEntity(world, user, lookDir.x, lookDir.y, lookDir.z, (int) (4 * f));
+						fireballEntity.move(MovementType.SELF, lookDir.normalize().add(0,1.6f,0));
 						fireballEntity.setOwner(fireballEntity);
 
 						fireballEntity.setProperties(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, f * 3.0F, .5F);
