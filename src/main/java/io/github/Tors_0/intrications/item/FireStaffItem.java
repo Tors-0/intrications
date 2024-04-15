@@ -43,6 +43,7 @@ public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
+		// code copied from FlintAndSteelItem.class
 		PlayerEntity playerEntity = context.getPlayer();
 		World world = context.getWorld();
 		BlockPos blockPos = context.getBlockPos();
@@ -95,17 +96,13 @@ public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		if (!world.isClient()) {
-			ItemStack itemStack = user.getStackInHand(hand);
-			boolean bl = user.getArrowType(itemStack).isEmpty();
-			if (!user.getAbilities().creativeMode && bl) {
-				return TypedActionResult.fail(itemStack);
-			} else {
-				user.setCurrentHand(hand);
-				return TypedActionResult.consume(itemStack);
-			}
+		ItemStack itemStack = user.getStackInHand(hand);
+		boolean bl = user.getArrowType(itemStack).isEmpty(); // check if user has any fire charges
+		if (!user.getAbilities().creativeMode && bl) { // if they arent in creative and dont have fire charges
+			return TypedActionResult.fail(itemStack); // dont let them charge the staff
 		} else {
-			return TypedActionResult.pass(user.getStackInHand(hand));
+			user.setCurrentHand(hand);
+			return TypedActionResult.consume(itemStack); // otherwise they all good :)
 		}
 	}
 
@@ -114,7 +111,7 @@ public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 		if (user instanceof PlayerEntity playerEntity) {
 			boolean bl = playerEntity.getAbilities().creativeMode;
 			ItemStack itemStack = playerEntity.getArrowType(stack);
-			if (!itemStack.isEmpty() || bl) {
+			if (!itemStack.isEmpty() || bl) { // only continue if the player has fire charges or access to creative mode
 				if (itemStack.isEmpty()) {
 					itemStack = new ItemStack(Items.FIRE_CHARGE);
 				}
@@ -124,25 +121,28 @@ public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 				if (!((double)f < 0.1)) {
 					boolean bl2 = bl && itemStack.isOf(Items.ARROW);
 					if (!world.isClient) {
+						// get the player's looking direction
 						Vec3d lookDir = user.getRotationVec(1f);
+						// register a fireball in the world, owned by the player
 						FireballEntity fireballEntity = new StaffFireballEntity(world, user, lookDir.x, lookDir.y, lookDir.z, (int) (4 * f));
+						// move it one block forward and 1.6 blocks up, to allow player to hit it and prevent it from hitting the player
 						fireballEntity.move(MovementType.SELF, lookDir.normalize().add(0,1.6f,0));
-						fireballEntity.setOwner(fireballEntity);
 
+						// set proper velocity and trajectory for fireball
 						fireballEntity.setProperties(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, f * 3.0F, .5F);
 
 						stack.damage(1, playerEntity, (p) -> {
-							p.sendToolBreakStatus(playerEntity.getActiveHand());
+							p.sendToolBreakStatus(playerEntity.getActiveHand()); // use durability
 						});
 
-						world.spawnEntity(fireballEntity);
+						world.spawnEntity(fireballEntity); // spawn in da fireball >:3
 					}
 
 					world.playSound((PlayerEntity)null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 					if (!bl2 && !playerEntity.getAbilities().creativeMode) {
-						itemStack.decrement(1);
-						if (itemStack.isEmpty()) {
-							playerEntity.getInventory().removeOne(itemStack);
+						itemStack.decrement(1); // remove one fire charge
+						if (itemStack.isEmpty()) { // if player has no fire charges
+							playerEntity.getInventory().removeOne(itemStack); // remove the empty stack from the inventory
 						}
 					}
 
@@ -152,7 +152,8 @@ public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 		}
 	}
 
-	public static float getPullProgress(int useTicks) {
+	public static float getPullProgress(int useTicks) { // tell us if the staff is fully charged
+		// code copied from BowItem.class
 		float f = (float)useTicks / 20.0F;
 		f = (f * f + f * 2.0F) / 3.0F;
 		if (f > 1.0F) {
@@ -195,6 +196,6 @@ public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 
 	@Override
 	public boolean canRepair(ItemStack stack, ItemStack ingredient) {
-		return stack.isDamaged() && ingredient.isOf(Items.BLAZE_ROD);
+		return stack.isDamaged() && ingredient.isOf(Items.BLAZE_ROD); // let us repair the staff
 	}
 }

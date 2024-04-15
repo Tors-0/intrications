@@ -13,8 +13,8 @@ public class StaffFireballEntity extends FireballEntity {
 
 	@Override
 	protected void onEntityHit(EntityHitResult entityHitResult) {
-		if (entityHitResult.getEntity() instanceof GhastEntity) {
-			this.setOwner(this);
+		if (entityHitResult.getEntity() instanceof GhastEntity) { // if the fireball is about to kill a ghast
+			this.setOwner(this); // don't give the player credit, that's not how you're meant to get that advancement
 		}
 		super.onEntityHit(entityHitResult);
 	}
