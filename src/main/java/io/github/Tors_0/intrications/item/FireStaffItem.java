@@ -28,7 +28,7 @@ import java.util.function.Predicate;
 public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 	public static final Predicate<ItemStack> FIRE_STAFF_PROJECTILES = itemStack -> itemStack.isOf(Items.FIRE_CHARGE);
 	public FireStaffItem(Settings settings) {
-		super(settings.maxDamage(96));
+		super(settings);
 	}
 
 	@Override
@@ -90,11 +90,6 @@ public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 	}
 
 	@Override
-	public boolean isUsedOnRelease(ItemStack stack) {
-		return true;
-	}
-
-	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack itemStack = user.getStackInHand(hand);
 		boolean bl = user.getArrowType(itemStack).isEmpty(); // check if user has any fire charges
@@ -109,9 +104,9 @@ public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 	@Override
 	public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
 		if (user instanceof PlayerEntity playerEntity) {
-			boolean bl = playerEntity.getAbilities().creativeMode;
+			boolean userHasCreative = playerEntity.getAbilities().creativeMode;
 			ItemStack itemStack = playerEntity.getArrowType(stack);
-			if (!itemStack.isEmpty() || bl) { // only continue if the player has fire charges or access to creative mode
+			if (!itemStack.isEmpty() || userHasCreative) { // only continue if the player has fire charges or access to creative mode
 				if (itemStack.isEmpty()) {
 					itemStack = new ItemStack(Items.FIRE_CHARGE);
 				}
@@ -119,7 +114,7 @@ public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 				int i = this.getMaxUseTime(stack) - remainingUseTicks;
 				float f = getPullProgress(i);
 				if (!((double)f < 0.1)) {
-					boolean bl2 = bl && itemStack.isOf(Items.ARROW);
+					boolean userCreativeAndHasAmmo = userHasCreative && itemStack.isOf(Items.FIRE_CHARGE);
 					if (!world.isClient) {
 						// get the player's looking direction
 						Vec3d lookDir = user.getRotationVec(1f);
@@ -139,9 +134,9 @@ public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 					}
 
 					world.playSound((PlayerEntity)null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
-					if (!bl2 && !playerEntity.getAbilities().creativeMode) {
+					if (!userCreativeAndHasAmmo && !playerEntity.getAbilities().creativeMode) {
 						itemStack.decrement(1); // remove one fire charge
-						if (itemStack.isEmpty()) { // if player has no fire charges
+						if (itemStack.isEmpty()) { // if item stack has no fire charges
 							playerEntity.getInventory().removeOne(itemStack); // remove the empty stack from the inventory
 						}
 					}
