@@ -1,6 +1,7 @@
 package io.github.Tors_0.intrications;
 
 import io.github.Tors_0.intrications.item.TeleportStaffItem;
+import io.github.Tors_0.intrications.registry.IntricationsItems;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;

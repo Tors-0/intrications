@@ -1,6 +1,8 @@
-package io.github.Tors_0.intrications;
+package io.github.Tors_0.intrications.registry;
 
+import io.github.Tors_0.intrications.Intrications;
 import io.github.Tors_0.intrications.item.FireStaffItem;
+import io.github.Tors_0.intrications.item.SlimeStaffItem;
 import io.github.Tors_0.intrications.item.TeleportStaffItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -15,8 +17,13 @@ public interface IntricationsItems {
 	Map<Item, Identifier> ITEMS = new LinkedHashMap<>();
 
 	// Item NAME = createItem("name", new ModItem(new QuiltItemSettings()));
-	Item TELEPORT_STAFF = createItem("teleport_staff", new TeleportStaffItem(new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)));
-	Item FIRE_STAFF = createItem("fire_staff", new FireStaffItem(new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(128)));
+	Item TELEPORT_STAFF = createItem("teleport_staff", new TeleportStaffItem(
+		new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)));
+	Item FIRE_STAFF = createItem("fire_staff", new FireStaffItem(
+		new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(128)));
+	Item SLIME_STAFF = createItem("slime_staff", new SlimeStaffItem(
+		new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)));
+
 
 	/**
 	 * Creates a new item of type T using the constructor from T
