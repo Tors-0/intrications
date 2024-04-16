@@ -1,4 +1,8 @@
 {
   "item.intrications.teleport_staff": "Teleport Staff",
-  "item.intrications.fire_staff": "Fire Staff"
+  "item.intrications.fire_staff": "Fire Staff",
+  "item.intrications.slime_staff": "Slime Staff",
+
+  "advancements.intrications.useless_projectile.title": "\"Useless Projectile\"",
+  "advancements.intrications.useless_projectile.description": "Kill an iron golem with a slimeball fired from a slime staff"
 }
