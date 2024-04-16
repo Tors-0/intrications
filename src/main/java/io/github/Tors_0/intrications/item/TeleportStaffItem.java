@@ -6,10 +6,7 @@ import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.client.render.debug.GameTestDebugRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.Vanishable;
+import net.minecraft.item.*;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
@@ -26,8 +23,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 
-public class TeleportStaffItem extends Item implements Vanishable {
-	public static final ItemStack FUEL_ITEM = new ItemStack(Items.ENDER_PEARL);
+import java.util.function.Predicate;
+
+public class TeleportStaffItem extends RangedWeaponItem implements Vanishable {
+	public static final Predicate<ItemStack> FUEL_ITEM = itemStack -> itemStack.isOf(Items.ENDER_PEARL);
 	public static final int MAX_DISTANCE = 96;
 
 	@Override
@@ -37,6 +36,16 @@ public class TeleportStaffItem extends Item implements Vanishable {
 
 	public TeleportStaffItem(Settings settings) {
 		super(settings);
+	}
+
+	@Override
+	public Predicate<ItemStack> getProjectiles() {
+		return FUEL_ITEM;
+	}
+
+	@Override
+	public int getRange() {
+		return 96;
 	}
 
 
@@ -52,7 +61,7 @@ public class TeleportStaffItem extends Item implements Vanishable {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		if (!world.isClient()) {
 			ItemStack itemStack = user.getStackInHand(hand);
-			if (!user.isCreative() && !user.getInventory().contains(FUEL_ITEM)) {
+			if (!user.isCreative() && !user.getArrowType(itemStack).isEmpty()) {
 				return TypedActionResult.fail(itemStack);
 			} else {
 				user.setCurrentHand(hand);
@@ -81,8 +90,8 @@ public class TeleportStaffItem extends Item implements Vanishable {
 			if (remainingUseTicks > .8f * getMaxUseTime(stack)) {
 				return;
 			}
-			if (player.getInventory().contains(FUEL_ITEM) || player.isCreative()) {
-				ItemStack itemStack = player.getInventory().getStack(player.getInventory().getSlotWithStack(FUEL_ITEM));
+			if (!player.getArrowType(stack).isEmpty() || player.getAbilities().creativeMode) {
+				ItemStack itemStack = player.getArrowType(stack);
 				double maxDistance = getMaxDistance(stack, remainingUseTicks);
 				Vec3d startPoint = player.getPos().add(0.0, 1.6F, 0.0);
 				BlockHitResult hitResult = ItemModified.raycast(
@@ -95,7 +104,7 @@ public class TeleportStaffItem extends Item implements Vanishable {
 
 				BlockPos pos = new BlockPos(hitResult.getPos());
 
-				// coordinate handling to avoid teleporting into blocks
+				// coordinate handling to avoid teleporting into blocks + teleport
 				player.teleport(pos.getX() + .5, pos.getY(), pos.getZ() + .5, true);
 
 				// particles & arrival sound
@@ -105,7 +114,7 @@ public class TeleportStaffItem extends Item implements Vanishable {
 				player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 3.0F, 1.0F);
 
 				// if player isn't in creative, remove an ender pearl
-				if (!player.isCreative() && !itemStack.isEmpty()) {
+				if (!player.getAbilities().creativeMode && !itemStack.isEmpty()) {
 					itemStack.decrement(1);
 					if (itemStack.isEmpty()) {
 						player.getInventory().removeOne(itemStack);
