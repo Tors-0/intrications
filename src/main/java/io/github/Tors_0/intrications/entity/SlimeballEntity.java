@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
 public class SlimeballEntity extends SnowballEntity {
-	public static final ItemStack ITEM = Items.SLIME_BLOCK.getDefaultStack();
+	public static final ItemStack ITEM = Items.SLIME_BALL.getDefaultStack();
 	public SlimeballEntity(World world, double x, double y, double z) {
 		super(world, x, y, z);
 		this.setItem(ITEM);

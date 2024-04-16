@@ -61,7 +61,7 @@ public class TeleportStaffItem extends RangedWeaponItem implements Vanishable {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		if (!world.isClient()) {
 			ItemStack itemStack = user.getStackInHand(hand);
-			if (!user.isCreative() && !user.getArrowType(itemStack).isEmpty()) {
+			if (!user.getAbilities().creativeMode && user.getArrowType(itemStack).isEmpty()) {
 				return TypedActionResult.fail(itemStack);
 			} else {
 				user.setCurrentHand(hand);
