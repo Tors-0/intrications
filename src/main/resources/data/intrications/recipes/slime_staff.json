@@ -18,5 +18,10 @@
   },
   "result": {
     "item": "intrications:slime_staff"
-  }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "intrications:slime_staff_enabled"
+    }
+  ]
 }

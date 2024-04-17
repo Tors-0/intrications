@@ -28,8 +28,8 @@ public class IntricationsItems {
 
 	static {
 		TELEPORT_STAFF =
-			createItem("teleport_staff",
-				new TeleportStaffItem(new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)));
+			createItem("teleport_staff", new TeleportStaffItem(
+				new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)));
 
 		FIRE_STAFF =
 			createItem("fire_staff", new FireStaffItem(
@@ -38,8 +38,6 @@ public class IntricationsItems {
 		SLIME_STAFF =
 			createItem("slime_staff", new SlimeStaffItem(
 				new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)));
-		// TODO change this system to always register items, but use a ResourceConditions to only enable the recipes depending on config
-		// TODO may work now
 	}
 
 

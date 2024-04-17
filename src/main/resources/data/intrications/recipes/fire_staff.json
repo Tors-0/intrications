@@ -18,5 +18,10 @@
   },
   "result": {
     "item": "intrications:fire_staff"
-  }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "intrications:fire_staff_enabled"
+    }
+  ]
 }
