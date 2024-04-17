@@ -5,6 +5,7 @@ import io.github.Tors_0.intrications.IntricationsConfig;
 import io.github.Tors_0.intrications.item.FireStaffItem;
 import io.github.Tors_0.intrications.item.SlimeStaffItem;
 import io.github.Tors_0.intrications.item.TeleportStaffItem;
+import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
@@ -28,7 +29,8 @@ public class IntricationsItems {
 	static {
 		TELEPORT_STAFF =
 			IntricationsConfig.INSTANCE.teleportStaffEnabled.value() ?
-				createItem("teleport_staff", new TeleportStaffItem(new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)))
+				createItem("teleport_staff",
+					new TeleportStaffItem(new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)))
 				: null;
 
 		FIRE_STAFF =
@@ -42,6 +44,7 @@ public class IntricationsItems {
 				createItem("slime_staff", new SlimeStaffItem(
 					new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)))
 				: null;
+		// TODO change this system to always register items, but use a ResourceConditions to only enable the recipes depending on config
 	}
 
 
