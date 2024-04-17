@@ -1,5 +1,7 @@
 package io.github.Tors_0.intrications.item;
 
+import io.github.Tors_0.intrications.Intrications;
+import io.github.Tors_0.intrications.IntricationsConfig;
 import io.github.Tors_0.intrications.entity.StaffFireballEntity;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.*;
@@ -27,6 +29,7 @@ import java.util.function.Predicate;
 
 public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 	public static final Predicate<ItemStack> FIRE_STAFF_PROJECTILES = itemStack -> itemStack.isOf(Items.FIRE_CHARGE);
+	public static final int FIREBALL_POWER = IntricationsConfig.INSTANCE.fireStaffMaxExplosionPower.value();
 	public FireStaffItem(Settings settings) {
 		super(settings);
 	}
@@ -114,7 +117,7 @@ public class FireStaffItem extends RangedWeaponItem implements Vanishable {
 						// get the player's looking direction
 						Vec3d lookDir = user.getRotationVec(1f);
 						// register a fireball in the world, owned by the player
-						FireballEntity fireballEntity = new StaffFireballEntity(world, user, lookDir.x, lookDir.y, lookDir.z, (int) (4 * f));
+						FireballEntity fireballEntity = new StaffFireballEntity(world, user, lookDir.x, lookDir.y, lookDir.z, (int) (FIREBALL_POWER * f));
 						// move it one block forward and 1.6 blocks up, to allow player to hit it and prevent it from hitting the player
 						fireballEntity.move(MovementType.SELF, lookDir.normalize().add(0,1.6f,0));
 

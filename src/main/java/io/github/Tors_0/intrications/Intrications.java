@@ -20,16 +20,18 @@ public class Intrications implements ModInitializer {
 		IntricationsItems.register();
 
 		// create model predicate providers
-		ModelPredicateProviderRegistry.register(
-			IntricationsItems.TELEPORT_STAFF,
-			new Identifier("pull"),
-			((itemStack, clientWorld, livingEntity, i) -> {
-				if (livingEntity == null) {
-					return 0f;
-				} else {
-					return livingEntity.getActiveItem() != itemStack ? 0f : TeleportStaffItem.getChargePercentage(itemStack, livingEntity.getItemUseTimeLeft());
-				}
-			})
-		);
+		if (IntricationsItems.TELEPORT_STAFF != null) {
+			ModelPredicateProviderRegistry.register(
+				IntricationsItems.TELEPORT_STAFF,
+				new Identifier("pull"),
+				((itemStack, clientWorld, livingEntity, i) -> {
+					if (livingEntity == null) {
+						return 0f;
+					} else {
+						return livingEntity.getActiveItem() != itemStack ? 0f : TeleportStaffItem.getChargePercentage(itemStack, livingEntity.getItemUseTimeLeft());
+					}
+				})
+			);
+		}
 	}
 }
