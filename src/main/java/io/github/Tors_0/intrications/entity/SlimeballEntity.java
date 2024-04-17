@@ -9,6 +9,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.BlazeEntity;
+import net.minecraft.entity.mob.MagmaCubeEntity;
 import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.entity.projectile.thrown.SnowballEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
@@ -59,14 +60,21 @@ public class SlimeballEntity extends SnowballEntity {
 	@Override
 	protected void onEntityHit(EntityHitResult entityHitResult) {
 		Entity entity = entityHitResult.getEntity(); // get the entity we hit
-		int i = entity instanceof SlimeEntity ? 0 : 1; // if slime, deal no damage, otherwise: 1 damage
-		// give player credit if this accidentally kills smth
-		entity.damage(DamageSource.thrownProjectile(this, this.getOwner()), (float)i);
+		if (entity instanceof SlimeEntity slime && !(entity instanceof MagmaCubeEntity)) {
+			int newSize = Math.min(slime.getSize() + 1, 7);
+			slime.setSize(newSize, true);
 
-		// launch the hit entity
-		Vec3d velocity = this.getVelocity();
-		velocity.add(0,.2,0);
-		entity.setVelocity(velocity);
+			// give player credit (needed for achievement)
+			entity.damage(DamageSource.thrownProjectile(this, this.getOwner()), 0f);
+		} else {
+			// give player credit if this accidentally kills smth
+			entity.damage(DamageSource.thrownProjectile(this, this.getOwner()), 1f);
+
+			// launch the hit entity
+			Vec3d velocity = this.getVelocity();
+			velocity.add(0, .2, 0);
+			entity.setVelocity(velocity);
+		}
 	}
 
 	@Override
