@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:slime_block"
+    },
+    "title": {
+      "translate": "advancements.intrications.artificial_inflation.title"
+    },
+    "description": {
+      "translate": "advancements.intrications.artificial_inflation.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "intrications:artificial_inflation"
+    }
+  }
+}

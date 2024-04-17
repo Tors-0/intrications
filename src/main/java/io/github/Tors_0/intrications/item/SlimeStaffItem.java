@@ -13,6 +13,7 @@ import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -80,6 +81,9 @@ public class SlimeStaffItem extends RangedWeaponItem {
 						slimeballEntity.move(MovementType.SELF, lookDir.normalize().add(0,1.6f,0));
 						// set the player as the owner of it
 						slimeballEntity.setOwner(user);
+						// give it a custom name so we can distinguish it from a snowball in advancements
+						slimeballEntity.setCustomName(Text.of("slimeball"));
+						slimeballEntity.setCustomNameVisible(false);
 
 						// set proper velocity and trajectory for slimeball
 						slimeballEntity.setProperties(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, f * 3.0F, .5F);
