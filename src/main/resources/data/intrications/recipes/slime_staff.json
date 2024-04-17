@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#",
+    "$",
+    "@"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:slime_block"
+    },
+    "$": {
+      "item": "minecraft:slime_ball"
+    },
+    "@": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "intrications:slime_staff"
+  }
+}

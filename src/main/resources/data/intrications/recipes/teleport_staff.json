@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#",
+    "$",
+    "@"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:ender_eye"
+    },
+    "$": {
+      "item": "minecraft:end_crystal"
+    },
+    "@": {
+      "item": "minecraft:end_rod"
+    }
+  },
+  "result": {
+    "item": "intrications:teleport_staff"
+  }
+}
