@@ -4,5 +4,8 @@
   "item.intrications.slime_staff": "Slime Staff",
 
   "advancements.intrications.useless_projectile.title": "\"Useless Projectile\"",
-  "advancements.intrications.useless_projectile.description": "Kill an iron golem with a slimeball fired from a slime staff"
+  "advancements.intrications.useless_projectile.description": "Kill an iron golem with a slimeball fired from a slime staff",
+
+  "advancements.intrications.artificial_inflation.title": "Artificial Inflation",
+  "advancements.intrications.artificial_inflation.desc": "Grow a slime to max size with a slime staff"
 }

@@ -34,7 +34,7 @@ import net.minecraft.world.event.GameEvent;
 
 public class SlimeballEntity extends SnowballEntity {
 	public static final ItemStack ITEM = Items.SLIME_BALL.getDefaultStack();
-	public static final int SLIME_MAX_SIZE = 7;
+	public static final int SLIME_MAX_SIZE = 10;
 	public SlimeballEntity(World world, double x, double y, double z) {
 		super(world, x, y, z);
 		this.setItem(ITEM);
@@ -65,15 +65,25 @@ public class SlimeballEntity extends SnowballEntity {
 	protected void onEntityHit(EntityHitResult entityHitResult) {
 		Entity entity = entityHitResult.getEntity(); // get the entity we hit
 		if (entity instanceof SlimeEntity slime && !(entity instanceof MagmaCubeEntity)) {
-			int newSize = Math.min(slime.getSize() + 1, SLIME_MAX_SIZE);
-			if (newSize != slime.getSize()) {
-				slime.setSize(newSize, true);
+			int slimeSize = slime.getSize();
+			if (slimeSize >= SLIME_MAX_SIZE) {
+				return;
 			}
-			// if we maxed out the slime size
-			if (this.getOwner() instanceof ServerPlayerEntity player && newSize == SLIME_MAX_SIZE) {
-				// give the player the advancement
-				IntricationsAdvancements.ARTIFICIAL_INFLATION.trigger(player);
+			int newSize = Math.min(slimeSize + 1, SLIME_MAX_SIZE);
+			if (newSize != slimeSize) {
+				// give the slime a chance of growing inversely proportional to its size
+				float sizeChance = 1f / (slimeSize < 1 ? 1 : (float) slimeSize / 2f);
+				if (Math.random() <= sizeChance) {
+					// increase the slime size
+					slime.setSize(newSize, true);
+					// if we maxed out the slime size
+					if (this.getOwner() instanceof ServerPlayerEntity player && newSize == SLIME_MAX_SIZE) {
+						// give the player the advancement
+						IntricationsAdvancements.ARTIFICIAL_INFLATION.trigger(player);
+					}
+				}
 			}
+
 		} else {
 			// give player credit if this accidentally kills smth
 			entity.damage(DamageSource.thrownProjectile(this, this.getOwner()), 1f);
