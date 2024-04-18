@@ -1,5 +1,6 @@
 package io.github.Tors_0.intrications.entity;
 
+import io.github.Tors_0.intrications.IntricationsConfig;
 import io.github.Tors_0.intrications.registry.IntricationsAdvancements;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -22,6 +23,7 @@ import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
@@ -34,7 +36,7 @@ import net.minecraft.world.event.GameEvent;
 
 public class SlimeballEntity extends SnowballEntity {
 	public static final ItemStack ITEM = Items.SLIME_BALL.getDefaultStack();
-	public static final int SLIME_MAX_SIZE = 10;
+	public static final int SLIME_MAX_SIZE = IntricationsConfig.INSTANCE.maximumSlimeSize.value();
 	public SlimeballEntity(World world, double x, double y, double z) {
 		super(world, x, y, z);
 		this.setItem(ITEM);
@@ -76,10 +78,22 @@ public class SlimeballEntity extends SnowballEntity {
 				if (Math.random() <= sizeChance) {
 					// increase the slime size
 					slime.setSize(newSize, true);
+					// particles & sound
+					for (int i = 1; i < 15; ++i) {
+						((ServerWorld) world).spawnParticles(newSize >= SLIME_MAX_SIZE ? ParticleTypes.END_ROD : ParticleTypes.POOF, slime.getX(), slime.getY(), slime.getZ(), 1, 0, 0, 0, Math.random());
+					}
+					slime.playSound(SoundEvents.ENTITY_SLIME_SQUISH);
 					// if we maxed out the slime size
 					if (this.getOwner() instanceof ServerPlayerEntity player && newSize == SLIME_MAX_SIZE) {
 						// give the player the advancement
 						IntricationsAdvancements.ARTIFICIAL_INFLATION.trigger(player);
+					}
+				} else if (slime.getHealth() < slime.getMaxHealth()) {
+					float diff = slime.getMaxHealth() - slime.getHealth();
+					slime.heal((float) (diff * Math.random()));
+					// particles
+					for (int i = 1; i < 15; ++i) {
+						((ServerWorld) world).spawnParticles(ParticleTypes.HEART, slime.getX(), slime.getY(), slime.getZ(), 1, 0, 0, 0, Math.random());
 					}
 				}
 			}

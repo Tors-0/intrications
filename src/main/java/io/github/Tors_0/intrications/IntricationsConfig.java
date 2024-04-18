@@ -21,6 +21,10 @@ public class IntricationsConfig extends ReflectiveConfig {
 	@SerializedName("slime_staff_enabled")
 	public final TrackedValue<Boolean> slimeStaffEnabled = this.value(true);
 
+	@IntegerRange(min = 4, max = 12)
+	@SerializedName("max_slime_size")
+	public final TrackedValue<Integer> maximumSlimeSize = this.value(10);
+
 	@SerializedName("teleport_staff_enabled")
 	public final TrackedValue<Boolean> teleportStaffEnabled = this.value(true);
 }

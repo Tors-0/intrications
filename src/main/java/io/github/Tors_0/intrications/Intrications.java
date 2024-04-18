@@ -18,7 +18,7 @@ public class Intrications implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(Intrications.ID);
 	@Override
 	public void onInitialize(ModContainer mod) {
-		LOGGER.info("Intrications Internals Initializing Immediately :3 (version {})", mod.metadata().version());
+		LOGGER.info("Initializing Intrications Internals Immediately :3 (version {})", mod.metadata().version());
 
 		// add mod items
 		IntricationsItems.register();
@@ -38,8 +38,10 @@ public class Intrications implements ModInitializer {
 			);
 		}
 
+		// let us remove recipes if items are disabled in config
 		IntricationsRecipeConditions.register();
 
+		// create custom triggers for advancements
 		IntricationsAdvancements.register();
 	}
 }
