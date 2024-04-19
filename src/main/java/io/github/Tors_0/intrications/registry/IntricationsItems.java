@@ -35,6 +35,7 @@ public class IntricationsItems {
 		SLIME_STAFF =
 			createItem("slime_staff", new SlimeStaffItem(
 				new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(128)));
+
 		SPELLCASTING_STAFF =
 			createItem("spellcasting_staff", new SpellcastingStaffItem(
 				new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)));

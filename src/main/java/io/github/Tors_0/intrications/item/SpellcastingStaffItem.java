@@ -2,9 +2,11 @@ package io.github.Tors_0.intrications.item;
 
 import io.github.Tors_0.intrications.entity.MagicMissileEntity;
 import io.github.Tors_0.intrications.entity.SlimeballEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -15,10 +17,18 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.function.Predicate;
+
 public class SpellcastingStaffItem extends Item {
+	public static final Predicate<Entity> VALID_ENTITY = entity -> entity instanceof LivingEntity;
 	public SpellcastingStaffItem(Settings settings) {
 		super(settings);
 	}
@@ -34,7 +44,7 @@ public class SpellcastingStaffItem extends Item {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack itemStack = user.getStackInHand(hand);
 		boolean hasXP = user.totalExperience > 0; // check if user has any exp
-		if (!user.getAbilities().creativeMode && hasXP) { // if they arent in creative and dont have exp
+		if (!user.getAbilities().creativeMode && !hasXP) { // if they arent in creative and dont have exp
 			return TypedActionResult.fail(itemStack); // dont let them charge the staff
 		} else {
 			user.setCurrentHand(hand);
@@ -53,30 +63,65 @@ public class SpellcastingStaffItem extends Item {
 				float f = getPullProgress(i);
 				if (!((double)f < 0.1)) {
 					boolean userCreativeAndHasExp = userHasCreative && hasXP;
+					int xpCost = -3;
 					if (!world.isClient) {
-						// get the player's looking direction
-						Vec3d lookDir = user.getRotationVec(1f);
-						// register a slimeball in the world
-						MagicMissileEntity missile = new MagicMissileEntity(world, user.getX(), user.getY(), user.getZ());
-						// move it one block forward and 1.6 blocks up, to allow player to hit it and prevent it from hitting the player
-						missile.move(MovementType.SELF, lookDir.normalize().add(0,1.6f,0));
-						// set the player as the owner of it
-						missile.setOwner(user);
+						double range = 36.6d;
+						float tickDelta = 1f;
+						Vec3d playerCamPos = playerEntity.getCameraPosVec(tickDelta);
+						Vec3d lookDir = playerEntity.getRotationVec(tickDelta);
+						Vec3d endPos = playerCamPos.add(lookDir.x * range, lookDir.y * range, lookDir.z * range);
+						HitResult blockResult = world
+							.raycast(new RaycastContext(
+								playerCamPos, endPos, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, playerEntity
+							));
+						Vec3d startPoint = playerEntity.getPos().add(0.0, 1.6F, 0.0);
+						double distanceToBlockSq = blockResult != null ? blockResult.getPos().squaredDistanceTo(startPoint) : Double.POSITIVE_INFINITY;
+						Vec3d rotationVec = playerEntity.getRotationVec(1.0F);
+                        double effectiveRangeSq = Math.min(range * range, distanceToBlockSq);
+						Vec3d endPoint = startPoint.add(rotationVec.x * range, rotationVec.y * range, rotationVec.z * range);
+						Box box = playerEntity.getBoundingBox().stretch(rotationVec.multiply(range)).expand(1.0D,1.0D,1.0D);
+						EntityHitResult entityHitResult = ProjectileUtil.raycast(
+							playerEntity,
+							startPoint,
+							endPoint,
+							box,
+							VALID_ENTITY,
+							effectiveRangeSq
+						);
+						if (entityHitResult == null) {
+							xpCost = 0;
+							return;
+						}
+						ArrayList<MagicMissileEntity> missiles = new ArrayList<>(3);
+						for (byte b = 0; b <3; b++) {
+							missiles.add(
+								new MagicMissileEntity(world, user.getX(), user.getY(), user.getZ(), (LivingEntity) entityHitResult.getEntity(), f * 4f)
+							);
+						}
+						missiles.forEach(missile -> {
+							// move it one block forward and 1.6 blocks up, to prevent it from hitting the player
+							missile.move(MovementType.SELF, lookDir.normalize().add(0,1.6f,0));
+							// set the player as the owner of it
+							missile.setOwner(user);
+						});
+						missiles.get(0).move(MovementType.SELF, lookDir.normalize().rotateY(20));
+						missiles.get(1).move(MovementType.SELF, lookDir.normalize().rotateX(-20));
+						missiles.get(2).move(MovementType.SELF, lookDir.normalize().rotateX(20));
 
-						// set proper velocity and trajectory for slimeball
-						missile.setProperties(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, f * 8.0F, 0F);
+						missiles.forEach(world::spawnEntity);
 
 						stack.damage(1, playerEntity, (p) -> {
 							p.sendToolBreakStatus(playerEntity.getActiveHand()); // use durability
 						});
 
-						world.spawnEntity(missile); // MAGIC MISSILE :D
+						if (hasXP && !playerEntity.getAbilities().creativeMode) {
+							playerEntity.addExperience(xpCost); // use xp
+						}
+
+						stack.setCooldown(200);
 					}
 
 					world.playSound((PlayerEntity)null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.BLOCK_SOUL_SAND_HIT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
-					if (!userCreativeAndHasExp && !playerEntity.getAbilities().creativeMode) {
-						playerEntity.addExperience(-1);
-					}
 
 					playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
 				}
