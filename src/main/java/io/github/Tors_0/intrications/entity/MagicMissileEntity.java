@@ -1,11 +1,14 @@
 package io.github.Tors_0.intrications.entity;
 
+import net.minecraft.client.render.entity.ArrowEntityRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 
 public class MagicMissileEntity extends ArrowEntity {
@@ -13,6 +16,7 @@ public class MagicMissileEntity extends ArrowEntity {
 	public MagicMissileEntity(World world, double x, double y, double z) {
 		super(world, x, y, z);
 		this.setSound(SoundEvents.BLOCK_SOUL_SAND_HIT);
+		this.setGlowing(true);
 	}
 
 	public MagicMissileEntity(World world, LivingEntity owner) {
@@ -28,10 +32,6 @@ public class MagicMissileEntity extends ArrowEntity {
 	@Override
 	public int getColor() {
 		return 8900331;
-	}
-	@Override
-	public boolean isGlowing() {
-		return true;
 	}
 
 	@Override
@@ -60,6 +60,17 @@ public class MagicMissileEntity extends ArrowEntity {
 		} else {
 			super.handleStatus(status);
 		}
+	}
+
+	@Override
+	protected void onBlockHit(BlockHitResult blockHitResult) {
+		super.onBlockHit(blockHitResult);
+		this.discard();
+	}
+
+	@Override
+	public void onPlayerCollision(PlayerEntity player) {
+		super.onPlayerCollision(player);
 	}
 
 	@Override
