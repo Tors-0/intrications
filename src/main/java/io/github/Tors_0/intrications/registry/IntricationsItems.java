@@ -1,18 +1,14 @@
 package io.github.Tors_0.intrications.registry;
 
 import io.github.Tors_0.intrications.Intrications;
-import io.github.Tors_0.intrications.IntricationsConfig;
 import io.github.Tors_0.intrications.item.FireStaffItem;
 import io.github.Tors_0.intrications.item.SlimeStaffItem;
+import io.github.Tors_0.intrications.item.SpellcastingStaffItem;
 import io.github.Tors_0.intrications.item.TeleportStaffItem;
-import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import org.jetbrains.annotations.Nullable;
-import org.quiltmc.config.api.Config;
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
 
 import java.util.LinkedHashMap;
@@ -25,6 +21,7 @@ public class IntricationsItems {
 	public static final Item TELEPORT_STAFF;
 	public static final Item FIRE_STAFF;
 	public static final Item SLIME_STAFF;
+	public static final Item SPELLCASTING_STAFF;
 
 	static {
 		TELEPORT_STAFF =
@@ -37,6 +34,9 @@ public class IntricationsItems {
 
 		SLIME_STAFF =
 			createItem("slime_staff", new SlimeStaffItem(
+				new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(128)));
+		SPELLCASTING_STAFF =
+			createItem("spellcasting_staff", new SpellcastingStaffItem(
 				new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)));
 	}
 

@@ -4,8 +4,6 @@ import io.github.Tors_0.intrications.item.TeleportStaffItem;
 import io.github.Tors_0.intrications.registry.IntricationsAdvancements;
 import io.github.Tors_0.intrications.registry.IntricationsItems;
 import io.github.Tors_0.intrications.registry.IntricationsRecipeConditions;
-import net.fabricmc.fabric.api.resource.conditions.v1.DefaultResourceConditions;
-import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
