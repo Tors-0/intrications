@@ -18,7 +18,8 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "io.github.Tors_0.intrications.Intrications"
+			"init": "io.github.Tors_0.intrications.Intrications",
+			"client_init": "io.github.Tors_0.intrications.IntricationsClient"
 		},
 		"depends": [
 			{
