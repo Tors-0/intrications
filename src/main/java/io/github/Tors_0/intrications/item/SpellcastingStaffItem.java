@@ -43,7 +43,7 @@ public class SpellcastingStaffItem extends Item {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack itemStack = user.getStackInHand(hand);
-		boolean hasXP = user.totalExperience > 0; // check if user has any exp
+		boolean hasXP = user.totalExperience >= 3; // check if user has any exp
 		if (!user.getAbilities().creativeMode && !hasXP) { // if they arent in creative and dont have exp
 			return TypedActionResult.fail(itemStack); // dont let them charge the staff
 		} else {
@@ -92,23 +92,16 @@ public class SpellcastingStaffItem extends Item {
 							xpCost = 0;
 							return;
 						}
-						ArrayList<MagicMissileEntity> missiles = new ArrayList<>(3);
-						for (byte b = 0; b <3; b++) {
-							missiles.add(
-								new MagicMissileEntity(world, user.getX(), user.getY(), user.getZ(), (LivingEntity) entityHitResult.getEntity(), f * 4f)
-							);
-						}
-						missiles.forEach(missile -> {
-							// move it one block forward and 1.6 blocks up, to prevent it from hitting the player
-							missile.move(MovementType.SELF, lookDir.normalize().add(0,1.6f,0));
-							// set the player as the owner of it
-							missile.setOwner(user);
-						});
-						missiles.get(0).move(MovementType.SELF, lookDir.normalize().rotateY(20));
-						missiles.get(1).move(MovementType.SELF, lookDir.normalize().rotateX(-20));
-						missiles.get(2).move(MovementType.SELF, lookDir.normalize().rotateX(20));
 
-						missiles.forEach(world::spawnEntity);
+						MagicMissileEntity missile = new MagicMissileEntity(world, user.getX(), user.getY(), user.getZ(),
+							(LivingEntity) entityHitResult.getEntity(), f * 3f);
+
+						// move it one block forward and 1.6 blocks up, to prevent it from hitting the player
+						missile.move(MovementType.SELF, lookDir.normalize().add(0,1.6f,0));
+						// set the player as the owner of it
+						missile.setOwner(user);
+
+						world.spawnEntity(missile);
 
 						stack.damage(1, playerEntity, (p) -> {
 							p.sendToolBreakStatus(playerEntity.getActiveHand()); // use durability
@@ -118,7 +111,10 @@ public class SpellcastingStaffItem extends Item {
 							playerEntity.addExperience(xpCost); // use xp
 						}
 
-						stack.setCooldown(200);
+						// give the item a cooldown so it cant be spammed
+						if (!playerEntity.isCreative()) {
+							playerEntity.getItemCooldownManager().set(this, 50);
+						}
 					}
 
 					world.playSound((PlayerEntity)null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.BLOCK_SOUL_SAND_HIT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
