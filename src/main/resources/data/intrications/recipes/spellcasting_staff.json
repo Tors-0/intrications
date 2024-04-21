@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#",
+    "$",
+    "@"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:diamond"
+    },
+    "$": {
+      "item": "minecraft:crying_obsidian"
+    },
+    "@": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "result": {
+    "item": "intrications:spellcasting_staff"
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "intrications:spellcasting_staff_enabled"
+    }
+  ]
+}

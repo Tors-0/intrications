@@ -29,7 +29,7 @@ public class Intrications implements ModInitializer {
 		IntricationsAdvancements.register();
 	}
 
-	public static Identifier asResource(String id) {
+	public static Identifier getIdentifier(String id) {
 		return new Identifier(ID, id);
 	}
 }

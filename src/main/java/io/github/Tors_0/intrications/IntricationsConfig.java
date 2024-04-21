@@ -27,4 +27,7 @@ public class IntricationsConfig extends ReflectiveConfig {
 
 	@SerializedName("teleport_staff_enabled")
 	public final TrackedValue<Boolean> teleportStaffEnabled = this.value(true);
+
+	@SerializedName("spellcasting_staff_enabled")
+	public final TrackedValue<Boolean> spellcastingStaffEnabled = this.value(true);
 }

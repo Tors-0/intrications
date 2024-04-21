@@ -1,6 +1,7 @@
 package io.github.Tors_0.intrications.entity;
 
 import com.google.common.collect.Lists;
+import io.github.Tors_0.intrications.Intrications;
 import io.github.Tors_0.intrications.registry.IntricationsEntities;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.advancement.criterion.Criteria;
@@ -69,11 +70,13 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 		if (world.getBlockState(this.getBlockPos()).getBlock().equals(Blocks.AIR)) {
 			this.setNoClip(false);
 		}
-		/*if (this.world instanceof ServerWorld server) {
+		// these particles continue to spawn as the entity moves, even when the entity stops rendering
+		if (this.world instanceof ServerWorld server) {
 			server.spawnParticles(ParticleTypes.END_ROD,
 				this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5),
 				3, 0.1,0.1,0.1, 0);
-		}*/
+//			Intrications.LOGGER.info("render coords {}, {}, {}", lastRenderX, lastRenderY, lastRenderZ);
+		}
 	}
 
 	@Override

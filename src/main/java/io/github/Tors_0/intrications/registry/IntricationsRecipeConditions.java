@@ -15,5 +15,8 @@ public class IntricationsRecipeConditions {
 
 		ResourceConditions.register(new Identifier(Intrications.ID, "teleport_staff_enabled"),
 			jsonObject -> IntricationsConfig.INSTANCE.teleportStaffEnabled.value());
+
+		ResourceConditions.register(Intrications.getIdentifier("spellcasting_staff_enabled"),
+			jsonObject -> IntricationsConfig.INSTANCE.spellcastingStaffEnabled.value());
 	}
 }
