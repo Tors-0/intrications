@@ -94,7 +94,7 @@ public class SpellcastingStaffItem extends Item {
 						}
 
 						MagicMissileEntity missile = new MagicMissileEntity(world, user.getX(), user.getY(), user.getZ(),
-							(LivingEntity) entityHitResult.getEntity(), f * 3f);
+							(LivingEntity) entityHitResult.getEntity(), f * MagicMissileEntity.MAX_SPEED);
 
 						// move it one block forward and 1.6 blocks up, to prevent it from hitting the player
 						missile.move(MovementType.SELF, lookDir.normalize().add(0,1.6f,0));

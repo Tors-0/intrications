@@ -18,13 +18,7 @@ public class MagicMissileEntityRenderer extends ProjectileEntityRenderer<MagicMi
 
 	@Override
 	public void render(MagicMissileEntity entity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
-		// when the following code is uncommented, only a single particle spawns, then no more spawn
-//		if (entity.world instanceof ClientWorld clientWorld) {
-//			clientWorld.addParticle(ParticleTypes.END_ROD,
-//				entity.getParticleX(0.5), entity.getRandomBodyY(), entity.getParticleZ(0.5),
-//				0, 0, 0);
-//		}
-		super.render(entity, f, g, matrixStack, vertexConsumerProvider, i);
+		super.render(entity, f, g, matrixStack, vertexConsumerProvider, 255);
 	}
 
 	@Override

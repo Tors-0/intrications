@@ -11,6 +11,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -36,6 +37,7 @@ import java.util.Arrays;
 public class MagicMissileEntity extends PersistentProjectileEntity {
 	private LivingEntity target;
 	private float speed;
+	public static final float MAX_SPEED = 4f;
 
 	public MagicMissileEntity(EntityType<? extends MagicMissileEntity> entityType, World world) {
 		super(entityType, world);
@@ -53,29 +55,37 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (target == null || target.isDead()) {
-			this.discard();
-			return;
-		}
-		this.setVelocity(
-			target.getEyePos().subtract(this.getPos())
-				.normalize()
-				.multiply(this.speed)
-		);
-		if (this.distanceTo(target) < 1) {
-			this.setVelocity(
-				this.getVelocity()
-					.multiply(this.distanceTo(target)));
-		}
-		if (world.getBlockState(this.getBlockPos()).getBlock().equals(Blocks.AIR)) {
-			this.setNoClip(false);
-		}
-		// these particles continue to spawn as the entity moves, even when the entity stops rendering
-		if (this.world instanceof ServerWorld server) {
+		if (world instanceof ServerWorld server) {
+			if ((target == null || target.isDead())) {
+				this.discard();
+				return;
+			}
+			if (!(target instanceof EnderDragonEntity)) {
+				this.setVelocity(
+					target.getEyePos().subtract(this.getPos())
+						.normalize()
+						.multiply(this.speed)
+				);
+			} else {
+				this.setVelocity(
+					((EnderDragonEntity) target).head.getPos().subtract(this.getPos())
+						.normalize()
+						.multiply(this.speed)
+				);
+			}
+			if (this.distanceTo(target) < 2) {
+				this.setVelocity(
+					this.getVelocity()
+						.multiply(this.distanceTo(target) / 2));
+			}
+			if (world.getBlockState(this.getBlockPos()).getBlock().equals(Blocks.AIR)) {
+				this.setNoClip(false);
+			}
+			Vec3d backPos = this.getPos()
+				.subtract(this.getVelocity().normalize());
 			server.spawnParticles(ParticleTypes.END_ROD,
-				this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5),
-				3, 0.1,0.1,0.1, 0);
-//			Intrications.LOGGER.info("render coords {}, {}, {}", lastRenderX, lastRenderY, lastRenderZ);
+				backPos.x, backPos.y, backPos.z,
+				1, 0,0,0, speed * .1 / MAX_SPEED);
 		}
 	}
 
@@ -119,10 +129,12 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 
 		target.timeUntilRegen = 0;
 		if (target.damage(damageSource, (float)damage)) {
-			if (target instanceof LivingEntity) {
-				LivingEntity livingEntity = (LivingEntity)target;
+			if (isEnderman) {
+				return;
+			}
+			if (target instanceof LivingEntity livingEntity) {
 
-				if (!this.world.isClient && owner instanceof LivingEntity) {
+                if (!this.world.isClient && owner instanceof LivingEntity) {
 					EnchantmentHelper.onUserDamaged(livingEntity, owner);
 					EnchantmentHelper.onTargetDamaged((LivingEntity)owner, livingEntity);
 				}
