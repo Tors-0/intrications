@@ -92,16 +92,23 @@ public class SpellcastingStaffItem extends Item {
 							xpCost = 0;
 							return;
 						}
+						ArrayList<MagicMissileEntity> missiles = new ArrayList<>();
+						for (byte b = 0; b < 3; b++) {
+							missiles.add(new MagicMissileEntity(world, user.getX(), user.getY(), user.getZ(),
+								(LivingEntity) entityHitResult.getEntity(), f * MagicMissileEntity.MAX_SPEED));
+						}
+						lookDir = lookDir.rotateY((float) (Math.PI / 4));
+                        for (MagicMissileEntity missile : missiles) {
+							// set the player as the owner of it
+							missile.setOwner(user);
+                            // move the missile to a position around the player
+                            missile.move(MovementType.SELF, lookDir.normalize().multiply(3).add(0, 1.6f, 0));
+							// change the angle of the next missile
+							lookDir = lookDir.rotateY((float) -(Math.PI / 4));
+							// spawn the missile
+							world.spawnEntity(missile);
+                        }
 
-						MagicMissileEntity missile = new MagicMissileEntity(world, user.getX(), user.getY(), user.getZ(),
-							(LivingEntity) entityHitResult.getEntity(), f * MagicMissileEntity.MAX_SPEED);
-
-						// move it one block forward and 1.6 blocks up, to prevent it from hitting the player
-						missile.move(MovementType.SELF, lookDir.normalize().add(0,1.6f,0));
-						// set the player as the owner of it
-						missile.setOwner(user);
-
-						world.spawnEntity(missile);
 
 						stack.damage(1, playerEntity, (p) -> {
 							p.sendToolBreakStatus(playerEntity.getActiveHand()); // use durability
