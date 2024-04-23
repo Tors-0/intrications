@@ -81,11 +81,6 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 			if (world.getBlockState(this.getBlockPos()).getBlock().equals(Blocks.AIR)) {
 				this.setNoClip(false);
 			}
-			Vec3d backPos = this.getPos()
-				.subtract(this.getVelocity().normalize());
-			server.spawnParticles(ParticleTypes.END_ROD,
-				backPos.x, backPos.y, backPos.z,
-				1, 0,0,0, speed * .1 / MAX_SPEED);
 		}
 	}
 
@@ -102,6 +97,9 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 	@Override
 	protected void onEntityHit(EntityHitResult entityHitResult) {
 		Entity target = entityHitResult.getEntity();
+		if (!target.equals(this.target)) {
+			return;
+		}
 		float velLength = (float)this.getVelocity().length();
 		int damage = MathHelper.ceil(MathHelper.clamp((double)velLength * this.getDamage(), 0.0, 2.147483647E9));
 
@@ -129,9 +127,6 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 
 		target.timeUntilRegen = 0;
 		if (target.damage(damageSource, (float)damage)) {
-			if (isEnderman) {
-				return;
-			}
 			if (target instanceof LivingEntity livingEntity) {
 
                 if (!this.world.isClient && owner instanceof LivingEntity) {
