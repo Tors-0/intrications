@@ -2,6 +2,7 @@ package io.github.Tors_0.intrications.entity;
 
 import com.google.common.collect.Lists;
 import io.github.Tors_0.intrications.Intrications;
+import io.github.Tors_0.intrications.registry.IntricationsAdvancements;
 import io.github.Tors_0.intrications.registry.IntricationsEntities;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.advancement.criterion.Criteria;
@@ -66,9 +67,10 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 						.normalize()
 						.multiply(this.speed)
 				);
-			} else {
+			} else if (target instanceof EnderDragonEntity dragon) {
 				this.setVelocity(
-					((EnderDragonEntity) target).head.getPos().subtract(this.getPos())
+					dragon.head.getPos().add(0, dragon.head.getHeight(), 0)
+						.subtract(this.getPos())
 						.normalize()
 						.multiply(this.speed)
 				);
@@ -158,6 +160,10 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 
 				this.discard();
 			}
+		}
+
+		if (owner instanceof ServerPlayerEntity player && this.target.isDead()) {
+			IntricationsAdvancements.MAGIC_MISSILE.trigger(player);
 		}
 	}
 
