@@ -27,6 +27,7 @@ public class MineEntity extends PersistentProjectileEntity {
 	private int life = 0;
 	private float pich = 0;
 	private float ya = 0;
+	private float roll = 0;
 	public MineEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
 		this.setSound(SoundEvents.BLOCK_METAL_FALL);
@@ -44,27 +45,34 @@ public class MineEntity extends PersistentProjectileEntity {
 	public void setRotation(Direction dir) {
 		switch (dir) {
             case DOWN -> {
-				this.pich = 180;
 				this.ya = 180;
+				this.pich = (float) (Math.random() * 90);
+				this.roll = 0;
             }
             case UP -> {
-				this.pich = 0;
+				this.ya = 0;
+				this.pich = (float) (Math.random() * 90);
+				this.roll = 0;
 			}
             case NORTH -> {
-				this.pich = 0;
 				this.ya = 90;
+				this.pich = 0;
+				this.roll = (float) (Math.random() * 90);
             }
             case SOUTH -> {
-				this.pich = 180;
 				this.ya = 90;
+				this.pich = 180;
+				this.roll = (float) (Math.random() * 90);
             }
             case WEST -> {
-				this.pich = 90;
-				this.ya = 270;
+				this.ya = 180;
+				this.pich = (float) (Math.random() * 90);
+				this.roll = -90;
             }
             case EAST -> {
-				this.pich = 90;
-				this.ya = 90;
+				this.ya = 0;
+				this.pich = (float) (Math.random() * 90);
+				this.roll = -90;
             }
         }
 	}
@@ -73,6 +81,9 @@ public class MineEntity extends PersistentProjectileEntity {
 	}
 	public float getYa() {
 		return ya;
+	}
+	public float getRoll() {
+		return roll;
 	}
 	@Override
 	public void tick() {

@@ -30,8 +30,8 @@ public class MineEntityModel<T extends MineEntity> extends EntityModel<T> {
 		ModelPartData modelPartData = modelData.getRoot();
 
 		ModelPartData bone = modelPartData.addChild("bone", ModelPartBuilder.create()
-			.uv(0,0).cuboid(-4f, -2f, -4f, 8f, 2f, 8f)
-			.uv(6,10).cuboid(-2,-3,-2,4,1,4),
+			.uv(0,0).cuboid(-4f, -2f, -4f, 8f, 3f, 8f)
+			.uv(6,11).cuboid(-2,-3,-2,4,1,4),
 			ModelTransform.of(0f,24f,0f,0,0,0));
 
 		return TexturedModelData.of(modelData, 32, 32);
@@ -41,6 +41,7 @@ public class MineEntityModel<T extends MineEntity> extends EntityModel<T> {
 	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.bone.yaw = (float) ((Math.PI / 180.0) * entity.getPich());
 		this.bone.pitch = (float) ((Math.PI / 180.0) * entity.getYa());
+		this.bone.roll = (float) ((Math.PI / 180.0) * entity.getRoll());
 	}
 
 	@Override
