@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "intrications:mine"
+    },
+    "title": {
+      "translate": "advancements.intrications.tchaikovsky_no.title"
+    },
+    "description": {
+      "translate": "advancements.intrications.tchaikovsky_no.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "intrications:tchaikovsky_no"
+    }
+  }
+}

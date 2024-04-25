@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Box;
@@ -28,14 +29,17 @@ public class MineEntity extends PersistentProjectileEntity {
 	private float pich = 0;
 	private float ya = 0;
 	private float roll = 0;
+	private ItemStack stack;
 	public MineEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
 		this.setSound(SoundEvents.BLOCK_METAL_FALL);
 	}
 
-	public MineEntity(double x, double y, double z, World world) {
+	public MineEntity(double x, double y, double z, World world, ItemStack stack) {
 		super(IntricationsEntities.MINE, x, y, z, world);
 		this.setSound(SoundEvents.BLOCK_METAL_FALL);
+		this.stack = stack.copy();
+		this.stack.setCount(1);
 	}
 
 	public MineEntity(LivingEntity owner, World world) {
@@ -91,7 +95,7 @@ public class MineEntity extends PersistentProjectileEntity {
 		if (this.world instanceof ServerWorld server) {
 			if (this.shouldExplode) {
 				server.createExplosion(this, DamageSource.explosion((LivingEntity) getOwner()), null,
-					this.getX(), this.getY(), this.getZ(), 3, false, Explosion.DestructionType.BREAK);
+					this.getX(), this.getY(), this.getZ(), 3, false, Explosion.DestructionType.DESTROY);
 				this.discard();
 			}
 			if (!server.getOtherEntities(this.getOwner(),
@@ -122,11 +126,14 @@ public class MineEntity extends PersistentProjectileEntity {
 	@Override
 	protected boolean tryPickup(PlayerEntity player) {
 		if (player.equals(this.getOwner())) {
-			player.getInventory().insertStack(this.asItemStack());
-			return true;
+			if (player.isSneaking()) {
+				player.getInventory().insertStack(this.asItemStack());
+				return true;
+			}
+			return false;
 		}
 		if (player.getAbilities().creativeMode) {
-			return true;
+			return player.isSneaking();
 		}
 		this.detonate();
 		return false;
@@ -144,6 +151,9 @@ public class MineEntity extends PersistentProjectileEntity {
 		super.writeCustomDataToNbt(nbt);
 		nbt.putShort("int$life", (short) this.life);
 		nbt.putBoolean("int$shouldExplode", this.shouldExplode);
+		NbtCompound stackNbt = new NbtCompound();
+		this.stack.writeNbt(stackNbt);
+		nbt.put("stack", stackNbt);
 	}
 
 	@Override
@@ -151,11 +161,12 @@ public class MineEntity extends PersistentProjectileEntity {
 		super.readCustomDataFromNbt(nbt);
 		this.life = nbt.getShort("int$life");
 		this.shouldExplode = nbt.getBoolean("int$shouldExplode");
+		this.stack = ItemStack.fromNbt(nbt.getCompound("stack"));
 	}
 
 	@Override
 	protected ItemStack asItemStack() {
-		return IntricationsItems.MINE.getDefaultStack();
+		return this.stack;
 	}
 
 	@Override

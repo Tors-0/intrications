@@ -14,7 +14,10 @@ public class MineItem extends Item {
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		BlockPos pos = context.getBlockPos().offset(context.getSide());
-		MineEntity mine = new MineEntity(pos.getX() + .5f, pos.getY() + .5f, pos.getZ() + .5f, context.getWorld());
+		MineEntity mine = new MineEntity(pos.getX() + .5f, pos.getY() + .5f, pos.getZ() + .5f, context.getWorld(), context.getStack());
+		if (context.getStack().hasCustomName()) {
+			mine.setCustomName(context.getStack().getName());
+		}
 		mine.setOwner(context.getPlayer());
 		mine.setRotation(context.getSide());
 		BlockPos velocity = context.getBlockPos().subtract(mine.getBlockPos());

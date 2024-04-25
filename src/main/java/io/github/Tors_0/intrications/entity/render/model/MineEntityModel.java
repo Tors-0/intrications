@@ -31,7 +31,7 @@ public class MineEntityModel<T extends MineEntity> extends EntityModel<T> {
 
 		ModelPartData bone = modelPartData.addChild("bone", ModelPartBuilder.create()
 			.uv(0,0).cuboid(-4f, -2f, -4f, 8f, 3f, 8f)
-			.uv(6,11).cuboid(-2,-3,-2,4,1,4),
+			.uv(5,11).cuboid(-2.5f,-3,-2.5f,5,1,5),
 			ModelTransform.of(0f,24f,0f,0,0,0));
 
 		return TexturedModelData.of(modelData, 32, 32);

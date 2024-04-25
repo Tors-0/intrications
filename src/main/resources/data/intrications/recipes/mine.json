@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " _ ",
+    "~T~",
+    " ^ "
+  ],
+  "key": {
+    "_": {
+      "item": "minecraft:ender_eye"
+    },
+    "~": {
+      "item": "minecraft:iron_ingot"
+    },
+    "T": {
+      "item": "minecraft:tnt"
+    },
+    "^": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "item": "intrications:mine",
+    "count": 4
+  }
+}

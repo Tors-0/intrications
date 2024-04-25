@@ -3,6 +3,10 @@
   "item.intrications.fire_staff": "Fire Staff",
   "item.intrications.slime_staff": "Slime Staff",
   "item.intrications.spellcasting_staff": "Spellcasting Staff",
+  "item.intrications.minelayer_staff": "Mine Controller",
+  "item.intrications.mine": "Mine",
+
+  "entity.intrications.mine": "Mine",
 
   "advancements.intrications.useless_projectile.title": "\"Useless Projectile\"",
   "advancements.intrications.useless_projectile.description": "Kill an iron golem with a slimeball fired from a slime staff",
@@ -11,5 +15,8 @@
   "advancements.intrications.artificial_inflation.desc": "Grow a slime to max size with a slime staff",
 
   "advancements.intrications.magic_missile.title": "Magic Missile!",
-  "advancements.intrications.magic_missile.desc": "Kill an entity with a magic missile"
+  "advancements.intrications.magic_missile.desc": "Kill an entity with a magic missile",
+
+  "advancements.intrications.tchaikovsky_no.title": "Tchaikovsky, no!",
+  "advancements.intrications.tchaikovsky_no.desc": "\"Landmines are NOT instruments!\" \"Yes they are and I'm going to use 21 of them!\""
 }
