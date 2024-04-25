@@ -20,6 +20,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -51,6 +52,22 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 		this.setNoGravity(true);
 		this.target = target;
 		this.speed = speed;
+	}
+
+	@Override
+	public void writeCustomDataToNbt(NbtCompound nbt) {
+		super.writeCustomDataToNbt(nbt);
+		nbt.putFloat("int$speed", this.speed);
+		nbt.putUuid("int$target", this.target.getUuid());
+	}
+
+	@Override
+	public void readCustomDataFromNbt(NbtCompound nbt) {
+		super.readCustomDataFromNbt(nbt);
+		this.speed = nbt.getFloat("int$speed");
+		if (this.world instanceof ServerWorld server) {
+			this.target = (LivingEntity) server.getEntity(nbt.getUuid("int$target"));
+		}
 	}
 
 	@Override

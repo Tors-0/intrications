@@ -1,10 +1,7 @@
 package io.github.Tors_0.intrications.registry;
 
 import io.github.Tors_0.intrications.Intrications;
-import io.github.Tors_0.intrications.item.FireStaffItem;
-import io.github.Tors_0.intrications.item.SlimeStaffItem;
-import io.github.Tors_0.intrications.item.SpellcastingStaffItem;
-import io.github.Tors_0.intrications.item.TeleportStaffItem;
+import io.github.Tors_0.intrications.item.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
@@ -22,6 +19,8 @@ public class IntricationsItems {
 	public static final Item FIRE_STAFF;
 	public static final Item SLIME_STAFF;
 	public static final Item SPELLCASTING_STAFF;
+	public static final Item MINELAYER_STAFF;
+	public static final Item MINE;
 
 	static {
 		TELEPORT_STAFF =
@@ -39,6 +38,14 @@ public class IntricationsItems {
 		SPELLCASTING_STAFF =
 			createItem("spellcasting_staff", new SpellcastingStaffItem(
 				new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)));
+
+		MINELAYER_STAFF =
+			createItem("minelayer_staff", new MinelayerStaffItem(
+				new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(128)));
+
+		MINE =
+			createItem("mine", new MineItem(
+				new QuiltItemSettings().group(ItemGroup.REDSTONE)));
 	}
 
 

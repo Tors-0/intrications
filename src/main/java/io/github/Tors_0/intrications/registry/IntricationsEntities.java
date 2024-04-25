@@ -2,6 +2,7 @@ package io.github.Tors_0.intrications.registry;
 
 import io.github.Tors_0.intrications.Intrications;
 import io.github.Tors_0.intrications.entity.MagicMissileEntity;
+import io.github.Tors_0.intrications.entity.MineEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -20,6 +21,9 @@ public interface IntricationsEntities {
 	EntityType<MagicMissileEntity> MAGIC_MISSILE = createEntity("magic_missile",
 		QuiltEntityTypeBuilder.<MagicMissileEntity>create(SpawnGroup.MISC, MagicMissileEntity::new)
 			.setDimensions(EntityDimensions.fixed(.5f,.5f)).maxChunkTrackingRange(128).build());
+	EntityType<MineEntity> MINE = createEntity("mine",
+		QuiltEntityTypeBuilder.<MineEntity>create(SpawnGroup.MISC, MineEntity::new)
+			.setDimensions(EntityDimensions.fixed(.5f,.25f)).maxChunkTrackingRange(128).build());
 
 	private static <T extends EntityType<? extends Entity>> T createEntity(String name, T entity) {
 		ENTITIES.put(entity, new Identifier(Intrications.ID, name));
