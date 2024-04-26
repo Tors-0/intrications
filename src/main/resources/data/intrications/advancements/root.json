@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "intrications:teleport_staff"
+    },
+    "title": {
+      "translate": "advancements.intrications.root.title"
+    },
+    "description": {
+      "translate": "advancements.intrications.root.desc"
+    },
+    "background": "minecraft:textures/block/obsidian.png",
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "intrications:staffs"
+          }
+        ]
+      }
+    }
+  }
+}

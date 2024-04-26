@@ -6,6 +6,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MagmaCubeEntity;
 import net.minecraft.entity.mob.SlimeEntity;
@@ -26,13 +28,25 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
 
 public class SlimeballEntity extends SnowballEntity {
 	public static final ItemStack ITEM = Items.SLIME_BALL.getDefaultStack();
 	public static final int SLIME_MAX_SIZE = IntricationsConfig.INSTANCE.maximumSlimeSize.value();
+
+	public SlimeballEntity(EntityType<? extends SlimeballEntity> entityType, World world) {
+		super(entityType, world);
+		this.setItem(ITEM);
+	}
+
 	public SlimeballEntity(World world, double x, double y, double z) {
 		super(world, x, y, z);
 		this.setItem(ITEM);
+	}
+
+	@Override
+	public ItemStack getStack() {
+		return ITEM;
 	}
 
 	@Override
@@ -99,6 +113,10 @@ public class SlimeballEntity extends SnowballEntity {
 			Vec3d velocity = this.getVelocity();
 			velocity.add(0, .2, 0);
 			entity.setVelocity(velocity);
+
+			if (entity instanceof LivingEntity && ((LivingEntity) entity).isDead() && this.getOwner() instanceof ServerPlayerEntity) {
+				IntricationsAdvancements.USELESS_PROJECTILE.trigger((ServerPlayerEntity) this.getOwner());
+			}
 		}
 	}
 

@@ -1,4 +1,5 @@
 {
+  "parent": "intrications:root",
   "display": {
     "icon": {
       "item": "intrications:spellcasting_staff"

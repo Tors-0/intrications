@@ -1,4 +1,5 @@
 {
+  "parent": "intrications:useless_projectile",
   "display": {
     "icon": {
       "item": "minecraft:slime_block"
