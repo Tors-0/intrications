@@ -1,7 +1,6 @@
 package io.github.Tors_0.intrications.entity;
 
 import io.github.Tors_0.intrications.registry.IntricationsEntities;
-import io.github.Tors_0.intrications.registry.IntricationsItems;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -11,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Box;
@@ -25,7 +23,6 @@ public class MineEntity extends PersistentProjectileEntity {
 	 * this is to prevent mines from trying to detonate outside loaded chunks
  	 */
 	private boolean shouldExplode = false;
-	private int life = 0;
 	private float pich = 0;
 	private float ya = 0;
 	private float roll = 0;
@@ -151,7 +148,6 @@ public class MineEntity extends PersistentProjectileEntity {
 	@Override
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
-		nbt.putShort("int$life", (short) this.life);
 		nbt.putBoolean("int$shouldExplode", this.shouldExplode);
 		NbtCompound stackNbt = new NbtCompound();
 		this.stack.writeNbt(stackNbt);
@@ -162,7 +158,6 @@ public class MineEntity extends PersistentProjectileEntity {
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
-		this.life = nbt.getShort("int$life");
 		this.shouldExplode = nbt.getBoolean("int$shouldExplode");
 		this.stack = ItemStack.fromNbt(nbt.getCompound("stack"));
 		this.destructionType = Explosion.DestructionType.values()[nbt.getInt("type")];
@@ -174,10 +169,5 @@ public class MineEntity extends PersistentProjectileEntity {
 	}
 
 	@Override
-	protected void age() {
-		++this.life;
-		if (this.life >= 18000) {
-			this.detonate();
-		}
-	}
+	protected void age() {}
 }
