@@ -1,27 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " _ ",
-    "~T~",
-    " ^ "
+    "i~ ",
+    "~o~",
+    " ~ "
   ],
   "key": {
-    "_": {
-      "item": "minecraft:ender_eye"
-    },
     "~": {
       "item": "minecraft:iron_ingot"
     },
-    "T": {
-      "item": "minecraft:tnt"
+    "i": {
+      "item": "minecraft:redstone_torch"
     },
-    "^": {
-      "item": "minecraft:redstone"
+    "o": {
+      "item": "minecraft:stone_button"
     }
   },
   "result": {
-    "item": "intrications:mine",
-    "count": 4
+    "item": "intrications:minelayer_staff"
   },
   "fabric:load_conditions": [
     {

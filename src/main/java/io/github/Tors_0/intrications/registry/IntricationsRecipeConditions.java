@@ -18,5 +18,8 @@ public class IntricationsRecipeConditions {
 
 		ResourceConditions.register(Intrications.getIdentifier("spellcasting_staff_enabled"),
 			jsonObject -> IntricationsConfig.INSTANCE.spellcastingStaffEnabled.value());
+
+		ResourceConditions.register(Intrications.getIdentifier("mines_enabled"),
+			jsonObject -> IntricationsConfig.INSTANCE.minesEnabled.value());
 	}
 }
