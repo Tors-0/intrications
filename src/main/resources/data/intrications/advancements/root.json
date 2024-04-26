@@ -9,7 +9,7 @@
     "description": {
       "translate": "advancements.intrications.root.desc"
     },
-    "background": "minecraft:textures/block/obsidian.png",
+    "background": "minecraft:textures/block/respawn_anchor_bottom.png",
     "frame": "task",
     "show_toast": false,
     "announce_to_chat": true,
