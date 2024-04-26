@@ -1,9 +1,12 @@
 package io.github.Tors_0.intrications;
 
-import io.github.Tors_0.intrications.registry.IntricationsAdvancements;
-import io.github.Tors_0.intrications.registry.IntricationsEntities;
-import io.github.Tors_0.intrications.registry.IntricationsItems;
-import io.github.Tors_0.intrications.registry.IntricationsRecipeConditions;
+import io.github.Tors_0.intrications.registry.*;
+import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
+import net.fabricmc.fabric.api.loot.v2.LootTableSource;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTables;
+import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.loot.entry.LootTableEntry;
 import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
@@ -25,8 +28,19 @@ public class Intrications implements ModInitializer {
 
 		IntricationsEntities.initialize();
 
+		IntricationsDispenserBehavior.register();
+
 		// create custom triggers for advancements
 		IntricationsAdvancements.register();
+
+		// put a mine in the jungle temple, why don't you
+		LootTableEvents.MODIFY.register(((resourceManager, lootManager, id, tableBuilder, source) -> {
+			if (source.isBuiltin() && LootTables.JUNGLE_TEMPLE_DISPENSER_CHEST.equals(id)) {
+				LootPool.Builder poolBuilder = LootPool.builder()
+					.with(ItemEntry.builder(IntricationsItems.MINE));
+				tableBuilder.pool(poolBuilder);
+			}
+		}));
 	}
 
 	public static Identifier getIdentifier(String id) {

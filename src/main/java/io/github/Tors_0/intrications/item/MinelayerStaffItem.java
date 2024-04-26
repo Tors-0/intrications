@@ -27,6 +27,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -64,7 +65,7 @@ public class MinelayerStaffItem extends Item {
 				// get the player's looking direction
 				Vec3d lookDir = user.getRotationVec(1f);
 				// register a mine in the world
-				MineEntity mineEntity = new MineEntity(user.getX(), user.getY(), user.getZ(), world, ammo);
+				MineEntity mineEntity = new MineEntity(user.getX(), user.getY(), user.getZ(), world, ammo, Explosion.DestructionType.BREAK);
 				// move it one block forward and 1.6 blocks up, to allow player to hit it and prevent it from hitting the player
 				mineEntity.move(MovementType.SELF, lookDir.normalize().add(0, 1.6f, 0));
 				// set the player as the owner of it

@@ -30,16 +30,18 @@ public class MineEntity extends PersistentProjectileEntity {
 	private float ya = 0;
 	private float roll = 0;
 	private ItemStack stack;
+	private Explosion.DestructionType destructionType = Explosion.DestructionType.BREAK;
 	public MineEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
 		this.setSound(SoundEvents.BLOCK_METAL_FALL);
 	}
 
-	public MineEntity(double x, double y, double z, World world, ItemStack stack) {
+	public MineEntity(double x, double y, double z, World world, ItemStack stack, Explosion.DestructionType type) {
 		super(IntricationsEntities.MINE, x, y, z, world);
 		this.setSound(SoundEvents.BLOCK_METAL_FALL);
 		this.stack = stack.copy();
 		this.stack.setCount(1);
+		this.destructionType = type;
 	}
 
 	public MineEntity(LivingEntity owner, World world) {
@@ -94,8 +96,8 @@ public class MineEntity extends PersistentProjectileEntity {
 		super.tick();
 		if (this.world instanceof ServerWorld server) {
 			if (this.shouldExplode) {
-				server.createExplosion(this, DamageSource.explosion((LivingEntity) getOwner()), null,
-					this.getX(), this.getY(), this.getZ(), 3, false, Explosion.DestructionType.DESTROY);
+				server.createExplosion(this, DamageSource.explosion(getOwner() != null ? (LivingEntity) getOwner() : null), null,
+					this.getX(), this.getY(), this.getZ(), 3, false, this.destructionType);
 				this.discard();
 			}
 			if (!server.getOtherEntities(this.getOwner(),
@@ -154,6 +156,7 @@ public class MineEntity extends PersistentProjectileEntity {
 		NbtCompound stackNbt = new NbtCompound();
 		this.stack.writeNbt(stackNbt);
 		nbt.put("stack", stackNbt);
+		nbt.putInt("type", this.destructionType.ordinal());
 	}
 
 	@Override
@@ -162,6 +165,7 @@ public class MineEntity extends PersistentProjectileEntity {
 		this.life = nbt.getShort("int$life");
 		this.shouldExplode = nbt.getBoolean("int$shouldExplode");
 		this.stack = ItemStack.fromNbt(nbt.getCompound("stack"));
+		this.destructionType = Explosion.DestructionType.values()[nbt.getInt("type")];
 	}
 
 	@Override
