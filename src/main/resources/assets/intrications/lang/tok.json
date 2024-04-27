@@ -3,20 +3,23 @@
   "item.intrications.fire_staff": "palisa pi sike seli",
   "item.intrications.slime_staff": "palisa pi ko monsuta",
   "item.intrications.spellcasting_staff": "palisa wawa",
-  "item.intrications.minelayer_staff": "lawa pi alasa pakala",
+  "item.intrications.minelayer_staff": "lawa pi pakala anpa",
   "item.intrications.mine": "ilo pakala anpa",
 
   "entity.intrications.mine": "ilo pakala anpa",
 
+  "advancements.intrications.root.title": "ijo ike",
+  "advancements.intrications.root.desc": "ijo pi kepeken lili. tenpo ni la ona li pona",
+
   "advancements.intrications.useless_projectile.title": "\"ijo pana pakala\"",
-  "advancements.intrications.useless_projectile.description": "o moli e jan ilo pi kiwen walo kepeken ko monsuta tan palisa pi ko monsuta",
+  "advancements.intrications.useless_projectile.description": "o moli e ijo kepeken ko monsuta tan palisa pi ko monsuta",
 
   "advancements.intrications.artificial_inflation.title": "kon lawa",
   "advancements.intrications.artificial_inflation.desc": "o suli e monsuta ko kepeken palisa pi ko monsuta",
 
-  "advancements.intrications.magic_missile.title": "Magic Missile!",
-  "advancements.intrications.magic_missile.desc": "Kill an entity with a magic missile",
+  "advancements.intrications.magic_missile.title": "ijo pana wawa!",
+  "advancements.intrications.magic_missile.desc": "o moli e ijo kepeken ijo pana wawa",
 
-  "advancements.intrications.tchaikovsky_no.title": "Tchaikovsky, no!",
-  "advancements.intrications.tchaikovsky_no.desc": "\"ilo pakala anpa li ilo pi kalama musi ala!\" \"ona li ilo kalama. mi kepeken ona mute wan!\""
+  "advancements.intrications.tchaikovsky_no.title": "jan Sawikosi o, o ni ala!",
+  "advancements.intrications.tchaikovsky_no.desc": "\"ilo pi pakala anpa li pali ala e kalama musi!\" \"ona ken. mi kepeken e ona mute wan!\""
 }
