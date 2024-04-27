@@ -1,8 +1,10 @@
 package io.github.Tors_0.intrications;
 
 import io.github.Tors_0.intrications.registry.*;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v2.LootTableSource;
+import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.entry.ItemEntry;
@@ -43,6 +45,8 @@ public class Intrications implements ModInitializer {
 				tableBuilder.pool(poolBuilder);
 			}
 		}));
+
+		IntricationsItemCallbacks.register();
 	}
 
 	public static Identifier getIdentifier(String id) {
