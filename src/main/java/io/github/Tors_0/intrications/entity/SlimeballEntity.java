@@ -2,6 +2,7 @@ package io.github.Tors_0.intrications.entity;
 
 import io.github.Tors_0.intrications.IntricationsConfig;
 import io.github.Tors_0.intrications.registry.IntricationsAdvancements;
+import io.github.Tors_0.intrications.registry.IntricationsBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
@@ -36,6 +37,11 @@ public class SlimeballEntity extends SnowballEntity {
 
 	public SlimeballEntity(EntityType<? extends SlimeballEntity> entityType, World world) {
 		super(entityType, world);
+		this.setItem(ITEM);
+	}
+
+	public SlimeballEntity(World world, LivingEntity owner) {
+		super(world, owner);
 		this.setItem(ITEM);
 	}
 
@@ -125,10 +131,12 @@ public class SlimeballEntity extends SnowballEntity {
 		super.onBlockHit(blockHitResult);
 		BlockPos blockPos = blockHitResult.getBlockPos();
 		blockPos = blockPos.offset(blockHitResult.getSide());
-		BlockState state = Blocks.SLIME_BLOCK.getDefaultState();
+		BlockState state = IntricationsBlocks.AIRY_SLIME.getDefaultState();
 		if (world.canPlace(state, blockPos, ShapeContext.absent())) {
 			world.setBlockState(blockPos, state);
 			world.playSound(null, blockPos, SoundEvents.BLOCK_SLIME_BLOCK_PLACE, SoundCategory.BLOCKS, 1f, 1f);
+		} else {
+			dropItem(Items.SLIME_BALL);
 		}
 	}
 

@@ -4,11 +4,13 @@ import io.github.Tors_0.intrications.entity.render.MagicMissileEntityRenderer;
 import io.github.Tors_0.intrications.entity.render.MineEntityRenderer;
 import io.github.Tors_0.intrications.entity.render.model.MineEntityModel;
 import io.github.Tors_0.intrications.item.TeleportStaffItem;
+import io.github.Tors_0.intrications.registry.IntricationsBlocks;
 import io.github.Tors_0.intrications.registry.IntricationsEntities;
 import io.github.Tors_0.intrications.registry.IntricationsItems;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.client.render.entity.TntEntityRenderer;
@@ -17,6 +19,8 @@ import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
+import org.quiltmc.qsl.block.extensions.api.client.BlockRenderLayerMap;
+import org.quiltmc.qsl.block.extensions.impl.client.BlockRenderLayerMapImpl;
 
 @ClientOnly
 public class IntricationsClient implements ClientModInitializer {
@@ -45,5 +49,7 @@ public class IntricationsClient implements ClientModInitializer {
 		EntityRendererRegistry.register(IntricationsEntities.SLIMEBALL, FlyingItemEntityRenderer::new);
 
 		EntityModelLayerRegistry.registerModelLayer(MineEntityModel.LAYER_LOCATION, MineEntityModel::getTexturedModelData);
+
+		BlockRenderLayerMap.put(RenderLayer.getTranslucent(), IntricationsBlocks.AIRY_SLIME);
 	}
 }

@@ -16,8 +16,6 @@ public class IntricationsItems {
 
 	// Item NAME = createItem("name", new ModItem(new QuiltItemSettings()));
 	public static final Item TELEPORT_STAFF;
-	public static final Item FIRE_STAFF;
-	public static final Item SLIME_STAFF;
 	public static final Item SPELLCASTING_STAFF;
 	public static final Item MINELAYER_STAFF;
 	public static final Item MINE;
@@ -26,14 +24,6 @@ public class IntricationsItems {
 		TELEPORT_STAFF =
 			createItem("teleport_staff", new TeleportStaffItem(
 				new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)));
-
-		FIRE_STAFF =
-			createItem("fire_staff", new FireStaffItem(
-				new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(128)));
-
-		SLIME_STAFF =
-			createItem("slime_staff", new SlimeStaffItem(
-				new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(128)));
 
 		SPELLCASTING_STAFF =
 			createItem("spellcasting_staff", new SpellcastingStaffItem(

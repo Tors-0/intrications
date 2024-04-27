@@ -7,12 +7,6 @@ import net.minecraft.util.Identifier;
 
 public class IntricationsRecipeConditions {
 	public static void register() {
-		ResourceConditions.register(new Identifier(Intrications.ID, "fire_staff_enabled"),
-			jsonObject -> IntricationsConfig.INSTANCE.fireStaffEnabled.value());
-
-		ResourceConditions.register(new Identifier(Intrications.ID, "slime_staff_enabled"),
-			jsonObject -> IntricationsConfig.INSTANCE.slimeStaffEnabled.value());
-
 		ResourceConditions.register(new Identifier(Intrications.ID, "teleport_staff_enabled"),
 			jsonObject -> IntricationsConfig.INSTANCE.teleportStaffEnabled.value());
 

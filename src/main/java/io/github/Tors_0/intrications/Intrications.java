@@ -20,6 +20,8 @@ public class Intrications implements ModInitializer {
 	public void onInitialize(ModContainer mod) {
 		LOGGER.info("Initializing Intrications Internals Immediately :3 (version {})", mod.metadata().version());
 
+		// add mod blocks
+		IntricationsBlocks.initialize();
 		// add mod items
 		IntricationsItems.register();
 

@@ -10,16 +10,16 @@ import org.quiltmc.loader.api.config.v2.QuiltConfig;
 public class IntricationsConfig extends ReflectiveConfig {
 	public static final IntricationsConfig INSTANCE = QuiltConfig.create(Intrications.ID, Intrications.ID, IntricationsConfig.class);
 
-	@SerializedName("fire_staff_enabled")
-	public final TrackedValue<Boolean> fireStaffEnabled = this.value(true);
+	@SerializedName("throwable_fire_charges")
+	public final TrackedValue<Boolean> throwableFireChargesEnabled = this.value(true);
 
 	@IntegerRange(min = 3, max = 25)
 	@Comment("Anything over 5 is like, very OP >:3")
 	@SerializedName("fire_staff_max_explosion_power")
 	public final TrackedValue<Integer> fireStaffMaxExplosionPower = this.value(4);
 
-	@SerializedName("slime_staff_enabled")
-	public final TrackedValue<Boolean> slimeStaffEnabled = this.value(true);
+	@SerializedName("throwable_slime_balls")
+	public final TrackedValue<Boolean> throwableSlimeBallsEnabled = this.value(true);
 
 	@IntegerRange(min = 4, max = 12)
 	@SerializedName("max_slime_size")
