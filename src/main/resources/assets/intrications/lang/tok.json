@@ -3,7 +3,12 @@
   "item.intrications.spellcasting_staff": "palisa wawa",
   "item.intrications.minelayer_staff": "lawa pi pakala anpa",
   "item.intrications.mine": "ilo pakala anpa",
+  "item.intrications.airy_slime": "ko kon monsuta suli",
 
+  "block.intrications.airy_slime": "ko kon monsuta suli",
+
+  "entity.intrications.magic_missile": "ijo pana wawa",
+  "entity.intrications.slimeball": "ko monsuta",
   "entity.intrications.mine": "ilo pakala anpa",
 
   "advancements.intrications.root.title": "ijo ike",

@@ -3,8 +3,13 @@
   "item.intrications.spellcasting_staff": "Spellcasting Staff",
   "item.intrications.minelayer_staff": "Mine Controller",
   "item.intrications.mine": "Mine",
+  "item.intrications.airy_slime": "Airy Slime",
+
+  "block.intrications.airy_slime": "Airy Slime",
 
   "entity.intrications.mine": "Mine",
+  "entity.intrications.magic_missile": "Magic Missile",
+  "entity.intrications.slimeball": "Slimeball",
 
   "advancements.intrications.root.title": "Intrications",
   "advancements.intrications.root.desc": "The under-explored, now complex",
