@@ -123,6 +123,7 @@ public class SlimeballEntity extends SnowballEntity {
 			if (entity instanceof LivingEntity && ((LivingEntity) entity).isDead() && this.getOwner() instanceof ServerPlayerEntity) {
 				IntricationsAdvancements.USELESS_PROJECTILE.trigger((ServerPlayerEntity) this.getOwner());
 			}
+			dropItem(Items.SLIME_BALL);
 		}
 	}
 
