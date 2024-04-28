@@ -13,10 +13,15 @@ public class IntricationsConfig extends ReflectiveConfig {
 	@SerializedName("throwable_fire_charges")
 	public final TrackedValue<Boolean> throwableFireChargesEnabled = this.value(true);
 
+	@SerializedName("explosive_fire_charges")
+	@Comment("if false, thrown fireballs act like blaze fireballs, if true, they act like ghast fireballs")
+	public final TrackedValue<Boolean> explosiveFireBalls = this.value(false);
+
 	@IntegerRange(min = 3, max = 25)
 	@Comment("Anything over 5 is like, very OP >:3")
-	@SerializedName("fire_staff_max_explosion_power")
-	public final TrackedValue<Integer> fireStaffMaxExplosionPower = this.value(4);
+	@Comment("only applies if 'explosive_fire_charges' = true")
+	@SerializedName("fireball_explosion_power")
+	public final TrackedValue<Integer> fireballExplosionPower = this.value(4);
 
 	@SerializedName("throwable_slime_balls")
 	public final TrackedValue<Boolean> throwableSlimeBallsEnabled = this.value(true);

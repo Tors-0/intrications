@@ -55,8 +55,6 @@ public class IntricationsItems {
 	 * Registers all items into the Minecraft Item Registry
 	 */
 	public static void register() {
-		ITEMS.keySet().forEach(item -> {
-			Registry.register(Registry.ITEM, ITEMS.get(item), item);
-		});
+		ITEMS.keySet().forEach(item -> Registry.register(Registry.ITEM, ITEMS.get(item), item));
 	}
 }
