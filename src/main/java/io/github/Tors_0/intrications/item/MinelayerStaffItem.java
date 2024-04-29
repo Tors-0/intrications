@@ -67,6 +67,8 @@ public class MinelayerStaffItem extends Item {
 				mineEntity.move(MovementType.SELF, lookDir.normalize().add(0, 1.6f, 0));
 				// set the player as the owner of it
 				mineEntity.setOwner(user);
+				// the mine is linked to a staff
+				mineEntity.link();
 
 				// store the mine's uuid in the staff
 				NbtString nbtString = NbtString.of(mineEntity.getUuidAsString());
@@ -94,9 +96,10 @@ public class MinelayerStaffItem extends Item {
 
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
-		List<Entity> mines = context.getWorld().getOtherEntities(context.getPlayer(),
+		List<Entity> mines = context.getWorld().getOtherEntities(
+			context.getPlayer(),
 			new Box(context.getHitPos().subtract(1,1,1), context.getHitPos().add(1,1,1)),
-			entity -> entity instanceof MineEntity);
+			entity -> entity instanceof MineEntity && !((MineEntity) entity).isLinked());
 		if (!mines.isEmpty()) {
 			ItemStack stack = context.getStack();
 			if (!stack.getOrCreateNbt().contains("mines")) {
@@ -109,13 +112,19 @@ public class MinelayerStaffItem extends Item {
 				} else {
 					return;
 				}
-				((MineEntity)mine).setOwner(context.getPlayer());
-				if (context.getWorld().isClient) {
-					context.getWorld().addParticle(ParticleTypes.GLOW, true,
-						mine.getParticleX(.5), mine.getEyeY(), mine.getParticleZ(.5),
-						0,0,0);
+				// don't let the player link mines if an owner already exists
+				// (would be too easy if you could just link and then detonate them)
+				if (!(((MineEntity) mine).getOwner() instanceof PlayerEntity)) {
+					((MineEntity) mine).setOwner(context.getPlayer());
+					((MineEntity) mine).link();
+					if (context.getWorld().isClient) {
+						context.getWorld().addParticle(ParticleTypes.GLOW, true,
+							mine.getParticleX(.5), mine.getEyeY(), mine.getParticleZ(.5),
+							0,0,0);
+					}
+					context.getWorld().playSoundFromEntity(null, context.getPlayer(), SoundEvents.BLOCK_NOTE_BLOCK_CHIME, SoundCategory.PLAYERS, 1, 1);
 				}
-				context.getWorld().playSoundFromEntity(null, context.getPlayer(), SoundEvents.BLOCK_NOTE_BLOCK_CHIME, SoundCategory.PLAYERS, 1, 1);
+
 			});
 			return ActionResult.success(context.getWorld().isClient);
 		}

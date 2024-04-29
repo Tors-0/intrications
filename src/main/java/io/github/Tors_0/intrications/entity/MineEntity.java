@@ -28,6 +28,7 @@ public class MineEntity extends PersistentProjectileEntity {
 	private float roll = 0;
 	private ItemStack stack;
 	private Explosion.DestructionType destructionType = Explosion.DestructionType.BREAK;
+	private boolean linked = false;
 	public MineEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
 		this.setSound(SoundEvents.BLOCK_METAL_FALL);
@@ -78,6 +79,21 @@ public class MineEntity extends PersistentProjectileEntity {
 				this.roll = -90;
             }
         }
+	}
+
+	/**
+	 * check if the {@link MineEntity} is already linked to a mine controller
+	 */
+	public void link() {
+		this.linked = true;
+	}
+
+	/**
+	 * check if the {@link MineEntity} is already linked
+	 * @return {@code true} if mine is already linked to a controller
+	 */
+	public boolean isLinked() {
+		return this.linked;
 	}
 	public float getPich() {
 		return pich;
@@ -153,6 +169,7 @@ public class MineEntity extends PersistentProjectileEntity {
 		this.stack.writeNbt(stackNbt);
 		nbt.put("stack", stackNbt);
 		nbt.putInt("type", this.destructionType.ordinal());
+		nbt.putBoolean("linked", this.linked);
 	}
 
 	@Override
@@ -161,6 +178,7 @@ public class MineEntity extends PersistentProjectileEntity {
 		this.shouldExplode = nbt.getBoolean("int$shouldExplode");
 		this.stack = ItemStack.fromNbt(nbt.getCompound("stack"));
 		this.destructionType = Explosion.DestructionType.values()[nbt.getInt("type")];
+		this.linked = nbt.getBoolean("linked");
 	}
 
 	@Override
