@@ -114,7 +114,7 @@ public class MineEntity extends PersistentProjectileEntity {
 				this.discard();
 			}
 			if (!server.getOtherEntities(this.getOwner(),
-				new Box(this.getPos().subtract(1,1,1), this.getPos().add(1,1,1)).expand(1),
+				new Box(this.getPos().subtract(1,1,1), this.getPos().add(1,.5,1)).expand(1),
 				entity -> entity instanceof LivingEntity && entity.distanceTo(this) < 2.5f).isEmpty()
 			) {
 				this.detonate();
