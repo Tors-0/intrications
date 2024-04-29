@@ -6,6 +6,10 @@ jobs:
   build-gradle-project:
     runs-on: ubuntu-latest
     steps:
+    - name: Setup Java JDK
+      uses: actions/setup-java@v4.2.1
+      java-version: 17
+      distribution: coretto
     - name: Checkout project sources
       uses: actions/checkout@v4
     - name: Setup Gradle
