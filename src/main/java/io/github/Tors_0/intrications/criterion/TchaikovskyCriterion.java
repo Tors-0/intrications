@@ -28,7 +28,7 @@ public class TchaikovskyCriterion extends AbstractCriterion<TchaikovskyCriterion
 			return true;
 		});
 	}
-	public class Conditions extends AbstractCriterionConditions {
+	public static class Conditions extends AbstractCriterionConditions {
 		public Conditions(EntityPredicate.Extended playerPredicate) {
 			super(ID, playerPredicate);
 		}

@@ -3,7 +3,6 @@ package io.github.Tors_0.intrications.registry;
 import io.github.Tors_0.intrications.entity.MineEntity;
 import io.github.Tors_0.intrications.entity.SlimeballEntity;
 import net.minecraft.block.DispenserBlock;
-import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;

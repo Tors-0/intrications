@@ -5,7 +5,6 @@ import io.github.Tors_0.intrications.criterion.MagicMissileCriterion;
 import io.github.Tors_0.intrications.criterion.TchaikovskyCriterion;
 import io.github.Tors_0.intrications.criterion.UselessProjectileCriterion;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.advancement.criterion.CriterionConditions;
 
 public class IntricationsAdvancements {
 	public static InflationCriterion ARTIFICIAL_INFLATION = Criteria.register(new InflationCriterion());

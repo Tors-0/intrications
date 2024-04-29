@@ -1,14 +1,9 @@
 package io.github.Tors_0.intrications.item;
 
 import io.github.Tors_0.intrications.util.ItemModified;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.render.debug.GameTestDebugRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;

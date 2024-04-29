@@ -28,7 +28,7 @@ public class InflationCriterion extends AbstractCriterion<InflationCriterion.Con
 			return true;
 		});
 	}
-	public class Conditions extends AbstractCriterionConditions {
+	public static class Conditions extends AbstractCriterionConditions {
 		public Conditions(EntityPredicate.Extended playerPredicate) {
 			super(ID, playerPredicate);
 		}

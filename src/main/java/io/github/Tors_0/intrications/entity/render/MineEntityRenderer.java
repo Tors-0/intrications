@@ -12,12 +12,8 @@ import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
-import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 import java.util.List;
@@ -26,15 +22,15 @@ import java.util.List;
 public class MineEntityRenderer<T extends MineEntity, M extends MineEntityModel<T>> extends EntityRenderer<T> implements FeatureRendererContext<T, M> {
 	public static final Identifier TEXTURE = new Identifier("textures/entity/projectiles/arrow.png");
 	private final M model;
-	protected final List<FeatureRenderer<T, M>> features = Lists.<FeatureRenderer<T, M>>newArrayList();
+	protected final List<FeatureRenderer<T, M>> features = Lists.newArrayList();
 	public MineEntityRenderer(EntityRendererFactory.Context context) {
 		super(context);
-		model = (M) new MineEntityModel<MineEntity>(context.getPart(MineEntityModel.LAYER_LOCATION));
+		model = (M) new MineEntityModel<>(context.getPart(MineEntityModel.LAYER_LOCATION));
 		this.addFeature(new MineEyeFeatureRenderer<>(this));
 	}
 
 	@Override
-	public void render(MineEntity mine, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+	public void render(T mine, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
 		matrixStack.push();
 		float h = mine.getYaw();
 		float m = mine.getPitch();
@@ -44,11 +40,10 @@ public class MineEntityRenderer<T extends MineEntity, M extends MineEntityModel<
 		float n = 0.0F;
 		float o = 0.0F;
 
-		this.model.setAngles((T) mine, o, n, mine.age, h, m);
+		this.model.setAngles(mine, o, n, mine.age, h, m);
 		MinecraftClient minecraftClient = MinecraftClient.getInstance();
 		boolean bl = !mine.isInvisible();
 		boolean bl2 = !bl && !mine.isInvisibleTo(minecraftClient.player);
-		boolean bl3 = minecraftClient.hasOutline(mine);
 		RenderLayer renderLayer = RenderLayer.getEntitySolid(MineEntityModel.IDENTIFIER);
 		if (renderLayer != null) {
 			VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
@@ -63,7 +58,7 @@ public class MineEntityRenderer<T extends MineEntity, M extends MineEntityModel<
 		}
 
 		matrixStack.pop();
-		super.render((T) mine, f, g, matrixStack, vertexConsumerProvider, i);
+		super.render(mine, f, g, matrixStack, vertexConsumerProvider, i);
 	}
 	protected final boolean addFeature(FeatureRenderer<T, M> feature) {
 		return this.features.add(feature);

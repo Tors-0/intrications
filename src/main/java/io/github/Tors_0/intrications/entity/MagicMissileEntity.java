@@ -1,40 +1,28 @@
 package io.github.Tors_0.intrications.entity;
 
-import com.google.common.collect.Lists;
-import io.github.Tors_0.intrications.Intrications;
 import io.github.Tors_0.intrications.registry.IntricationsAdvancements;
 import io.github.Tors_0.intrications.registry.IntricationsEntities;
-import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
-import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.render.entity.ArrowEntityRenderer;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
-import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import java.util.Arrays;
 
 public class MagicMissileEntity extends PersistentProjectileEntity {
 	private LivingEntity target;
@@ -73,7 +61,7 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (world instanceof ServerWorld server) {
+		if (world instanceof ServerWorld) {
 			if ((target == null || target.isDead())) {
 				this.discard();
 				return;
@@ -123,7 +111,7 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 		int damage = MathHelper.ceil(MathHelper.clamp((double)velLength * this.getDamage(), 0.0, 2.147483647E9));
 
 		if (this.isCritical()) {
-			long critDmgIncrease = (long) this.random.nextInt(damage / 2 + 2);
+			long critDmgIncrease = this.random.nextInt(damage / 2 + 2);
 			damage = (int) Math.min(critDmgIncrease + (long) damage, 2147483647L);
 		}
 

@@ -1,7 +1,6 @@
 package io.github.Tors_0.intrications.item;
 
 import io.github.Tors_0.intrications.entity.MagicMissileEntity;
-import io.github.Tors_0.intrications.entity.SlimeballEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
@@ -9,11 +8,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -62,7 +59,6 @@ public class SpellcastingStaffItem extends Item {
 				int i = this.getMaxUseTime(stack) - remainingUseTicks;
 				float f = getPullProgress(i);
 				if (!((double)f < 0.1)) {
-					boolean userCreativeAndHasExp = userHasCreative && hasXP;
 					int xpCost = -3;
 					if (!world.isClient) {
 						double range = 36.6d;
@@ -89,7 +85,6 @@ public class SpellcastingStaffItem extends Item {
 							effectiveRangeSq
 						);
 						if (entityHitResult == null) {
-							xpCost = 0;
 							return;
 						}
 						ArrayList<MagicMissileEntity> missiles = new ArrayList<>();
@@ -124,7 +119,7 @@ public class SpellcastingStaffItem extends Item {
 						}
 					}
 
-					world.playSound((PlayerEntity)null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.BLOCK_SOUL_SAND_HIT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+					world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.BLOCK_SOUL_SAND_HIT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
 					playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
 				}

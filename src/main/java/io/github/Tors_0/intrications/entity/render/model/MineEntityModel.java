@@ -10,7 +10,6 @@ import net.minecraft.client.model.*;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 
@@ -29,9 +28,9 @@ public class MineEntityModel<T extends MineEntity> extends EntityModel<T> {
 		ModelData modelData = new ModelData();
 		ModelPartData modelPartData = modelData.getRoot();
 
-		ModelPartData bone = modelPartData.addChild("bone", ModelPartBuilder.create()
-			.uv(0,0).cuboid(-4f, -2f, -4f, 8f, 3f, 8f)
-			.uv(5,11).cuboid(-2.5f,-3,-2.5f,5,1,5),
+		modelPartData.addChild("bone", ModelPartBuilder.create()
+				.uv(0,0).cuboid(-4f, -2f, -4f, 8f, 3f, 8f)
+				.uv(5,11).cuboid(-2.5f,-3,-2.5f,5,1,5),
 			ModelTransform.of(0f,24f,0f,0,0,0));
 
 		return TexturedModelData.of(modelData, 32, 32);

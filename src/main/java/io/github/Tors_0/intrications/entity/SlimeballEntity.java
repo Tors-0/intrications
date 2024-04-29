@@ -4,7 +4,6 @@ import io.github.Tors_0.intrications.IntricationsConfig;
 import io.github.Tors_0.intrications.registry.IntricationsAdvancements;
 import io.github.Tors_0.intrications.registry.IntricationsBlocks;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -29,7 +28,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
-import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
 
 public class SlimeballEntity extends SnowballEntity {
 	public static final ItemStack ITEM = Items.SLIME_BALL.getDefaultStack();
@@ -62,7 +60,7 @@ public class SlimeballEntity extends SnowballEntity {
 
 	private ParticleEffect getParticleParameters() {
 		ItemStack itemStack = this.getItem();
-		return (ParticleEffect)(itemStack.isEmpty() ? ParticleTypes.ITEM_SLIME : new ItemStackParticleEffect(ParticleTypes.ITEM, itemStack));
+		return itemStack.isEmpty() ? ParticleTypes.ITEM_SLIME : new ItemStackParticleEffect(ParticleTypes.ITEM, itemStack);
 	}
 
 	@Override
