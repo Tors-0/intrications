@@ -1,9 +1,7 @@
-# Intrications
+<img src="src/main/resources/assets/intrications/logo.png" title="Intrications">
 
 A mod in which I do simple things in a complex manner
-
 ## Usage
-
 All Rights Reserved unless otherwise stated.
 - You may use this mod in videos and modpacks, provided you link to this page and follow terms of the License.<br>
     - You may not port this mod to other mod loaders (Forge, Fabric, etc.)<br>
