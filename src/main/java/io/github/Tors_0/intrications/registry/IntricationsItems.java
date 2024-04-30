@@ -59,7 +59,13 @@ public class IntricationsItems {
 	public static void register() {
 		ITEMS.keySet().forEach(item -> Registry.register(Registries.ITEM, ITEMS.get(item), item));
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS_AND_UTILITIES).register(entries -> {
-			ITEMS.keySet().forEach(entries::addItem);
+			entries.addItem(TELEPORT_STAFF);
+			entries.addItem(SPELLCASTING_STAFF);
+			entries.addItem(MINELAYER_STAFF);
+			entries.addItem(MINE);
+		});
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE_BLOCKS).register(entries -> {
+			entries.addItem(IntricationsBlocks.AIRY_SLIME.asItem());
 		});
 	}
 }
