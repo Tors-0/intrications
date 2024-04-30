@@ -24,7 +24,6 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -62,7 +61,7 @@ public class MinelayerStaffItem extends Item {
 				// get the player's looking direction
 				Vec3d lookDir = user.getRotationVec(1f);
 				// register a mine in the world
-				MineEntity mineEntity = new MineEntity(user.getX(), user.getY(), user.getZ(), world, ammo, Explosion.DestructionType.BREAK);
+				MineEntity mineEntity = new MineEntity(user.getX(), user.getY(), user.getZ(), world, ammo);
 				// move it one block forward and 1.6 blocks up, to allow player to hit it and prevent it from hitting the player
 				mineEntity.move(MovementType.SELF, lookDir.normalize().add(0, 1.6f, 0));
 				// set the player as the owner of it
@@ -122,9 +121,8 @@ public class MinelayerStaffItem extends Item {
 							mine.getParticleX(.5), mine.getEyeY(), mine.getParticleZ(.5),
 							0,0,0);
 					}
-					context.getWorld().playSoundFromEntity(null, context.getPlayer(), SoundEvents.BLOCK_NOTE_BLOCK_CHIME, SoundCategory.PLAYERS, 1, 1);
+					context.getWorld().playSoundFromEntity(null, context.getPlayer(), SoundEvents.BLOCK_NOTE_BLOCK_CHIME.value(), SoundCategory.PLAYERS, 1, 1);
 				}
-
 			});
 			return ActionResult.success(context.getWorld().isClient);
 		}

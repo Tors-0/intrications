@@ -2,10 +2,12 @@ package io.github.Tors_0.intrications.registry;
 
 import io.github.Tors_0.intrications.Intrications;
 import io.github.Tors_0.intrications.item.*;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemGroups;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
 
 import java.util.LinkedHashMap;
@@ -23,19 +25,19 @@ public class IntricationsItems {
 	static {
 		TELEPORT_STAFF =
 			createItem("teleport_staff", new TeleportStaffItem(
-				new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)));
+				new QuiltItemSettings().maxCount(1).maxDamage(96)));
 
 		SPELLCASTING_STAFF =
 			createItem("spellcasting_staff", new SpellcastingStaffItem(
-				new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(96)));
+				new QuiltItemSettings().maxCount(1).maxDamage(96)));
 
 		MINELAYER_STAFF =
 			createItem("minelayer_staff", new MinelayerStaffItem(
-				new QuiltItemSettings().maxCount(1).group(ItemGroup.TOOLS).maxDamage(128)));
+				new QuiltItemSettings().maxCount(1).maxDamage(128)));
 
 		MINE =
 			createItem("mine", new MineItem(
-				new QuiltItemSettings().group(ItemGroup.REDSTONE)));
+				new QuiltItemSettings()));
 	}
 
 
@@ -55,6 +57,9 @@ public class IntricationsItems {
 	 * Registers all items into the Minecraft Item Registry
 	 */
 	public static void register() {
-		ITEMS.keySet().forEach(item -> Registry.register(Registry.ITEM, ITEMS.get(item), item));
+		ITEMS.keySet().forEach(item -> Registry.register(Registries.ITEM, ITEMS.get(item), item));
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS_AND_UTILITIES).register(entries -> {
+			ITEMS.keySet().forEach(entries::addItem);
+		});
 	}
 }

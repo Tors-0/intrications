@@ -1,9 +1,8 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "block/block",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "intrications:entity/mine/mine"
+		"0": "intrications:item/mine"
 	},
 	"elements": [
     {

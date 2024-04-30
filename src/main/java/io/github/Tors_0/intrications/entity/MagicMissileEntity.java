@@ -8,14 +8,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.damage.DamageEffects;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageSources;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
+import net.minecraft.network.packet.s2c.play.GameStateUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
@@ -53,7 +56,7 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		this.speed = nbt.getFloat("int$speed");
-		if (this.world instanceof ServerWorld server) {
+		if (this.getWorld() instanceof ServerWorld server) {
 			this.target = (LivingEntity) server.getEntity(nbt.getUuid("int$target"));
 		}
 	}
@@ -61,7 +64,7 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (world instanceof ServerWorld) {
+		if (this.getWorld() instanceof ServerWorld) {
 			if ((target == null || target.isDead())) {
 				this.discard();
 				return;
@@ -85,7 +88,7 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 					this.getVelocity()
 						.multiply(this.distanceTo(target) / 2));
 			}
-			if (world.getBlockState(this.getBlockPos()).getBlock().equals(Blocks.AIR)) {
+			if (this.getWorld().getBlockState(this.getBlockPos()).getBlock().equals(Blocks.AIR)) {
 				this.setNoClip(false);
 			}
 		}
@@ -118,9 +121,9 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 		Entity owner = this.getOwner();
 		DamageSource damageSource;
 		if (owner == null) {
-			damageSource = DamageSource.magic(this, this);
+			damageSource = this.getDamageSources().create(DamageTypes.MAGIC, this);
 		} else {
-			damageSource = DamageSource.magic(this, owner);
+			damageSource = this.getDamageSources().create(DamageTypes.MAGIC, this, owner);
 			if (owner instanceof LivingEntity) {
 				((LivingEntity)owner).onAttacking(target);
 			}
@@ -136,7 +139,7 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 		if (target.damage(damageSource, (float)damage)) {
 			if (target instanceof LivingEntity livingEntity) {
 
-                if (!this.world.isClient && owner instanceof LivingEntity) {
+                if (!this.getWorld().isClient && owner instanceof LivingEntity) {
 					EnchantmentHelper.onUserDamaged(livingEntity, owner);
 					EnchantmentHelper.onTargetDamaged((LivingEntity)owner, livingEntity);
 				}
@@ -145,7 +148,7 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 
 				this.onHit(livingEntity);
 				if (owner != null && livingEntity != owner && livingEntity instanceof PlayerEntity && owner instanceof ServerPlayerEntity && !this.isSilent()) {
-					((ServerPlayerEntity)owner).networkHandler.sendPacket(new GameStateChangeS2CPacket(GameStateChangeS2CPacket.PROJECTILE_HIT_PLAYER, 0.0F));
+					((ServerPlayerEntity)owner).networkHandler.sendPacket(new GameStateUpdateS2CPacket(GameStateUpdateS2CPacket.PROJECTILE_HIT_PLAYER, 0.0F));
 				}
 			}
 
@@ -158,7 +161,7 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 			this.setVelocity(this.getVelocity().multiply(-0.1));
 			this.setYaw(this.getYaw() + 180.0F);
 			this.prevYaw += 180.0F;
-			if (!this.world.isClient && this.getVelocity().lengthSquared() < 1.0E-7) {
+			if (!this.getWorld().isClient && this.getVelocity().lengthSquared() < 1.0E-7) {
 				if (this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
 					this.dropStack(this.asItemStack(), 0.1F);
 				}

@@ -3,7 +3,6 @@ package io.github.Tors_0.intrications.entity;
 import io.github.Tors_0.intrications.registry.IntricationsEntities;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
@@ -27,19 +26,17 @@ public class MineEntity extends PersistentProjectileEntity {
 	private float ya = 0;
 	private float roll = 0;
 	private ItemStack stack;
-	private Explosion.DestructionType destructionType = Explosion.DestructionType.BREAK;
 	private boolean linked = false;
 	public MineEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
 		this.setSound(SoundEvents.BLOCK_METAL_FALL);
 	}
 
-	public MineEntity(double x, double y, double z, World world, ItemStack stack, Explosion.DestructionType type) {
+	public MineEntity(double x, double y, double z, World world, ItemStack stack) {
 		super(IntricationsEntities.MINE, x, y, z, world);
 		this.setSound(SoundEvents.BLOCK_METAL_FALL);
 		this.stack = stack.copy();
 		this.stack.setCount(1);
-		this.destructionType = type;
 	}
 
 	public MineEntity(LivingEntity owner, World world) {
@@ -107,10 +104,10 @@ public class MineEntity extends PersistentProjectileEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.world instanceof ServerWorld server) {
+		if (this.getWorld() instanceof ServerWorld server) {
 			if (this.shouldExplode) {
-				server.createExplosion(this, DamageSource.explosion(getOwner() != null ? (LivingEntity) getOwner() : null), null,
-					this.getX(), this.getY(), this.getZ(), 3, false, this.destructionType);
+				server.createExplosion(this, this.getDamageSources().explosion(this, getOwner() != null ? (LivingEntity) getOwner() : null), null,
+					this.getX(), this.getY(), this.getZ(), 3, false, World.ExplosionSourceType.TNT);
 				this.discard();
 			}
 			if (!server.getOtherEntities(this.getOwner(),
@@ -168,7 +165,6 @@ public class MineEntity extends PersistentProjectileEntity {
 		NbtCompound stackNbt = new NbtCompound();
 		this.stack.writeNbt(stackNbt);
 		nbt.put("stack", stackNbt);
-		nbt.putInt("type", this.destructionType.ordinal());
 		nbt.putBoolean("linked", this.linked);
 	}
 
@@ -177,7 +173,6 @@ public class MineEntity extends PersistentProjectileEntity {
 		super.readCustomDataFromNbt(nbt);
 		this.shouldExplode = nbt.getBoolean("int$shouldExplode");
 		this.stack = ItemStack.fromNbt(nbt.getCompound("stack"));
-		this.destructionType = Explosion.DestructionType.values()[nbt.getInt("type")];
 		this.linked = nbt.getBoolean("linked");
 	}
 

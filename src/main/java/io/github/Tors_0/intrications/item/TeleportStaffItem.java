@@ -97,7 +97,7 @@ public class TeleportStaffItem extends RangedWeaponItem implements Vanishable {
 					maxDistance
 				);
 
-				BlockPos pos = new BlockPos(hitResult.getPos());
+				BlockPos pos = new BlockPos(hitResult.getBlockPos());
 
 				// coordinate handling to avoid teleporting into blocks + teleport
 				player.teleport(pos.getX() + .5, pos.getY(), pos.getZ() + .5, true);

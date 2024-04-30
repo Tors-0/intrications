@@ -69,7 +69,7 @@ public class SlimeballEntity extends SnowballEntity {
 			ParticleEffect particleEffect = this.getParticleParameters();
 
 			for(int i = 0; i < 8; ++i) {
-				this.world.addParticle(particleEffect, this.getX(), this.getY(), this.getZ(), 0.0, 0.0, 0.0);
+				this.getWorld().addParticle(particleEffect, this.getX(), this.getY(), this.getZ(), 0.0, 0.0, 0.0);
 			}
 		}
 	}
@@ -91,7 +91,7 @@ public class SlimeballEntity extends SnowballEntity {
 					slime.setSize(newSize, true);
 					// particles & sound
 					for (int i = 1; i < 15; ++i) {
-						((ServerWorld) world).spawnParticles(newSize >= SLIME_MAX_SIZE ? ParticleTypes.END_ROD : ParticleTypes.POOF, slime.getX(), slime.getY(), slime.getZ(), 1, 0, 0, 0, Math.random());
+						((ServerWorld) this.getWorld()).spawnParticles(newSize >= SLIME_MAX_SIZE ? ParticleTypes.END_ROD : ParticleTypes.POOF, slime.getX(), slime.getY(), slime.getZ(), 1, 0, 0, 0, Math.random());
 					}
 					slime.playSound(SoundEvents.ENTITY_SLIME_SQUISH);
 					// if we maxed out the slime size
@@ -104,14 +104,14 @@ public class SlimeballEntity extends SnowballEntity {
 					slime.heal((float) (diff * Math.random()));
 					// particles
 					for (int i = 1; i < 15; ++i) {
-						((ServerWorld) world).spawnParticles(ParticleTypes.HEART, slime.getX(), slime.getY(), slime.getZ(), 1, 0, 0, 0, Math.random());
+						((ServerWorld) this.getWorld()).spawnParticles(ParticleTypes.HEART, slime.getX(), slime.getY(), slime.getZ(), 1, 0, 0, 0, Math.random());
 					}
 				}
 			}
 
 		} else {
 			// give player credit if this accidentally kills smth
-			entity.damage(DamageSource.thrownProjectile(this, this.getOwner()), 1f);
+			entity.damage(this.getDamageSources().thrown(this, this.getOwner()), 1f);
 
 			// launch the hit entity
 			Vec3d velocity = this.getVelocity();
@@ -131,9 +131,9 @@ public class SlimeballEntity extends SnowballEntity {
 		BlockPos blockPos = blockHitResult.getBlockPos();
 		blockPos = blockPos.offset(blockHitResult.getSide());
 		BlockState state = IntricationsBlocks.AIRY_SLIME.getDefaultState();
-		if (world.canPlace(state, blockPos, ShapeContext.absent())) {
-			world.setBlockState(blockPos, state);
-			world.playSound(null, blockPos, SoundEvents.BLOCK_SLIME_BLOCK_PLACE, SoundCategory.BLOCKS, 1f, 1f);
+		if (this.getWorld().canPlace(state, blockPos, ShapeContext.absent())) {
+			this.getWorld().setBlockState(blockPos, state);
+			this.getWorld().playSound(null, blockPos, SoundEvents.BLOCK_SLIME_BLOCK_PLACE, SoundCategory.BLOCKS, 1f, 1f);
 		} else {
 			dropItem(Items.SLIME_BALL);
 		}
@@ -149,12 +149,12 @@ public class SlimeballEntity extends SnowballEntity {
 			BlockHitResult blockHitResult = (BlockHitResult)hitResult;
 			this.onBlockHit(blockHitResult);
 			BlockPos blockPos = blockHitResult.getBlockPos();
-			this.world.emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Context.create(this, this.world.getBlockState(blockPos)));
+			this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Context.create(this, this.getWorld().getBlockState(blockPos)));
 		}
 
 		// slimeball land behavior
-		if (!this.world.isClient) {
-			this.world.sendEntityStatus(this, (byte)3);
+		if (!this.getWorld().isClient) {
+			this.getWorld().sendEntityStatus(this, (byte)3);
 			this.discard();
 		}
 	}
