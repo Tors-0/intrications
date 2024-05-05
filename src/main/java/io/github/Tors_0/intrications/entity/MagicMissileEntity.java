@@ -8,9 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.damage.DamageEffects;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -34,6 +32,9 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 
 	public MagicMissileEntity(EntityType<? extends MagicMissileEntity> entityType, World world) {
 		super(entityType, world);
+		this.setSound(SoundEvents.BLOCK_SOUL_SAND_HIT);
+		this.setNoGravity(true);
+		this.setDamage(0.9f);
 	}
 
 	public MagicMissileEntity(World world, double x, double y, double z, LivingEntity target, float speed) {
@@ -43,6 +44,7 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 		this.setNoGravity(true);
 		this.target = target;
 		this.speed = speed;
+		this.setDamage(0.9f);
 	}
 
 	@Override
@@ -138,8 +140,7 @@ public class MagicMissileEntity extends PersistentProjectileEntity {
 		target.timeUntilRegen = 0;
 		if (target.damage(damageSource, (float)damage)) {
 			if (target instanceof LivingEntity livingEntity) {
-
-                if (!this.getWorld().isClient && owner instanceof LivingEntity) {
+				if (!this.getWorld().isClient && owner instanceof LivingEntity) {
 					EnchantmentHelper.onUserDamaged(livingEntity, owner);
 					EnchantmentHelper.onTargetDamaged((LivingEntity)owner, livingEntity);
 				}

@@ -21,7 +21,7 @@ public interface IntricationsBlocks {
 //	Block MOD_BLOCK = createBlock("mod_block", new ModBlock(QuiltBlockSettings.of(Material.SOME_MATERIAL, MapColor.SOME_COLOR).strength(-1.0F, 3600000.0F).sounds(BlockSoundGroup.COPPER)), true);
 
 	Block AIRY_SLIME = createBlock("airy_slime", new SlimeBlock(
-		QuiltBlockSettings.create().mapColor(MapColor.LIME).breakInstantly().slipperiness(0.8F).sounds(BlockSoundGroup.SLIME).nonOpaque()),
+		QuiltBlockSettings.create().mapColor(MapColor.LIME).breakInstantly().slipperiness(0.8F).sounds(BlockSoundGroup.SLIME).nonOpaque().lavaIgnitable()),
 		true);
 
 	static void initialize() {

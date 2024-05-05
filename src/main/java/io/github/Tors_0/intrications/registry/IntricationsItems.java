@@ -58,6 +58,7 @@ public class IntricationsItems {
 	 */
 	public static void register() {
 		ITEMS.keySet().forEach(item -> Registry.register(Registries.ITEM, ITEMS.get(item), item));
+
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS_AND_UTILITIES).register(entries -> {
 			entries.addItem(TELEPORT_STAFF);
 			entries.addItem(SPELLCASTING_STAFF);
